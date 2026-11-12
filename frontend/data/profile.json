@@ -1,0 +1,56 @@
+{
+  "name": "Milchis Catalin-Marian",
+  "aliases": [
+    "DarkSoulEngineer"
+  ],
+  "photo": "/profile-darksoul.png",
+  "headline": "Penetration tester and software engineer\nworking in cybersecurity",
+  "location": "Brasov, Romania",
+  "bio": "I'm a penetration tester at Arvato Systems and Lynx Security and a junior software engineer at Mitel Networks, and I study Electrical Engineering and Computer Science in Brasov. Most of what I know comes from building things and taking them apart: I design my own boards, write firmware and tools, and test how software, networks and radios hold up when someone pushes on them. I'm always learning and usually have a few experiments running at once.",
+  "education": {
+    "school": "Universitatea Transilvania din Brasov",
+    "faculty": "Faculty of Electrical Engineering and Computer Science",
+    "domain": "Electrical Engineering & Computer Science",
+    "extracurriculars": [
+      "InfoTRON mentor: six-week introductory mechatronics workshops for high-school students (2026)",
+      "SAS Entrepreneurial Student School (UNITBV)"
+    ]
+  },
+  "roles": [
+    {
+      "organization": "Universitatea Transilvania din Brasov",
+      "role": "InfoTRON Mentor: mechatronics workshops",
+      "current": false
+    }
+  ],
+  "skills": [
+    "Penetration testing",
+    "Wi-Fi / RF security",
+    "Software defined radio",
+    "OT / Modbus",
+    "Embedded systems",
+    "Reverse engineering",
+    "C",
+    "C++",
+    "Python",
+    "Assembly",
+    "JavaScript",
+    "MATLAB",
+    "PowerShell",
+    "Linux"
+  ],
+  "github": {
+    "login": "DarkSoulEngineer",
+    "name": "xdarksoul",
+    "avatar": "https://avatars.githubusercontent.com/u/187064147?v=4",
+    "url": "https://github.com/DarkSoulEngineer",
+    "company": "UnitBV",
+    "public_repos": 14,
+    "followers": 5,
+    "created_at": "2024-11-01"
+  },
+  "links": {
+    "linkedin": "https://www.linkedin.com/in/milchis-catalin-marian-824b61335/",
+    "github": "https://github.com/DarkSoulEngineer"
+  }
+}

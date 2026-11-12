@@ -1,0 +1,232 @@
+{
+  "photo": "/profile.png",
+  "summary": "Penetration tester at Arvato Systems and Lynx Security, junior software engineer at Mitel Networks, and Electrical Engineering and Computer Science student in Brasov. Focused on radio-frequency, embedded and industrial targets, writing own tooling in C and Python, from firmware drivers to protocol clients.",
+  "contact": {
+    "email": "milchiscatalin@gmail.com"
+  },
+  "print": {
+    "detailedRoles": 4,
+    "maxProjects": 4,
+    "projectCategories": [
+      "RF & Embedded",
+      "Security"
+    ],
+    "maxAchievements": 5
+  },
+  "experience": [
+    {
+      "organization": "Arvato Systems Romania",
+      "role": "Penetration Tester",
+      "period": "Present",
+      "current": true,
+      "points": [
+        "Run security assessments of web applications and APIs, from testing and analysis to the written report.",
+        "Extend offensive-security methodology and tooling alongside client engagements."
+      ]
+    },
+    {
+      "organization": "Lynx Security",
+      "role": "Penetration Tester",
+      "period": "Present",
+      "current": true,
+      "points": []
+    },
+    {
+      "organization": "Mitel Networks Romania",
+      "role": "Junior Software Engineer",
+      "period": "Present",
+      "current": true,
+      "points": [
+        "Build internal tools in Python and JavaScript for the OpenScape 4000 Assistant Manager.",
+        "Work across Hyper-V virtual machines, Linux and C components of OpenScape 4000 telecom configurations."
+      ]
+    },
+    {
+      "organization": "Brasov Cybersecurity Community",
+      "role": "Member & Speaker",
+      "period": "Present",
+      "current": true,
+      "points": [
+        "Speak on wireless security at local community events.",
+        "Also a member of the Invata Cyber Community."
+      ]
+    },
+    {
+      "organization": "Mitel Networks Romania",
+      "role": "Student Intern",
+      "period": "May to Jun 2025",
+      "current": false,
+      "points": [
+        "Configured and virtualised OpenScape 4000 telecom systems and worked on C-level components.",
+        "First hands-on work with carrier-grade telephony platforms and how they are tested."
+      ]
+    },
+    {
+      "organization": "Schaeffler Romania SRL",
+      "role": "CNC Machine Operator",
+      "period": "Aug 2019 to May 2022",
+      "current": false,
+      "points": [
+        "Operated CNC machine tools at the Cristian (Brasov) production site.",
+        "Worked to engineering drawings and quality requirements within a manufacturing team."
+      ]
+    }
+  ],
+  "skillGroups": [
+    {
+      "group": "Security",
+      "items": [
+        "Web and API penetration testing",
+        "Vulnerability assessment",
+        "Wi-Fi and sub-GHz RF",
+        "Software defined radio (GNU Radio, URH)",
+        "OT and Modbus",
+        "Reverse engineering (Ghidra, GDB)",
+        "CTF"
+      ]
+    },
+    {
+      "group": "Programming",
+      "items": [
+        "C",
+        "C++",
+        "Python",
+        "x86 Assembly",
+        "JavaScript",
+        "Java",
+        "MATLAB",
+        "SQL",
+        "VHDL",
+        "Bash",
+        "PowerShell"
+      ]
+    },
+    {
+      "group": "Embedded and RF",
+      "items": [
+        "ESP32 and ESP-IDF",
+        "Arduino",
+        "PlatformIO",
+        "KiCad",
+        "CST Studio Suite",
+        "SPI"
+      ]
+    },
+    {
+      "group": "Tools",
+      "items": [
+        "Linux (Kali, Arch)",
+        "Windows",
+        "Docker",
+        "Git",
+        "Wireshark",
+        "nmap",
+        "Hyper-V",
+        "VMware",
+        "QEMU",
+        "Proxmox",
+        "Selenium",
+        "LaTeX"
+      ]
+    },
+    {
+      "group": "Languages",
+      "items": [
+        "Romanian (native)",
+        "English (B2)"
+      ]
+    }
+  ],
+  "achievements": [
+    {
+      "id": 15,
+      "title": "DefCamp 2026",
+      "description": "Volunteer at the 16th edition of DefCamp, the largest cybersecurity conference in Central and Eastern Europe, at the Palace of the Parliament in Bucharest.",
+      "date": "2026-11-19",
+      "category": "Conference",
+      "url": "https://def.camp/",
+      "featured": false
+    },
+    {
+      "id": 13,
+      "title": "CyberSea Festival 2026",
+      "description": "Second edition of the CyberSea Festival in Mamaia, Constanta, organised by Women4Cyber Romania: hackathon-style competitions, hands-on workshops, mentoring and Cyber Villages on AI, secure by design and ethical hacking.",
+      "date": "2026-07-28",
+      "category": "Community",
+      "url": "https://cybersea.ro/",
+      "featured": false
+    },
+    {
+      "id": 14,
+      "title": "DefCamp 2025",
+      "description": "Volunteer at the 15th edition of DefCamp, the largest cybersecurity conference in Central and Eastern Europe, at the Palace of the Parliament in Bucharest.",
+      "date": "2025-11-13",
+      "category": "Conference",
+      "url": "https://def.camp/",
+      "featured": false
+    },
+    {
+      "id": 12,
+      "title": "Vulnerability assessment at Regional Brasov Hospital",
+      "description": "Vulnerability assessment conducted for the Regional Brasov Hospital within the Google Seminars Virtual Routes programme.",
+      "date": "2025-10-07",
+      "category": "Training",
+      "url": "https://virtual-routes.org/initiatives/cybersecurity-seminars/",
+      "featured": true
+    },
+    {
+      "id": 7,
+      "title": "Summer AFT Cyber Security School 2025",
+      "description": "Intensive cyber security school organised by the Nicolae Balcescu Land Forces Academy together with CyberCor, Codwer SRL, Visma SRL and DMI Automotives.",
+      "date": "2025-08-15",
+      "category": "Education",
+      "url": null,
+      "featured": false
+    },
+    {
+      "id": 6,
+      "title": "7th IEEE Summer School on Antennas, Propagation and RFID Applications",
+      "description": "Hands-on RF training with Vector Network Analyzers (Rohde & Schwarz), antenna radiation mapping (Anritsu) and electromagnetic simulation in CST Studio, held at the Nicolae Balcescu Land Forces Academy in Sibiu.",
+      "date": "2025-07-28",
+      "category": "Education",
+      "url": "https://antennapropagation.wordpress.com/draft-program-of-the-school/",
+      "featured": true
+    },
+    {
+      "id": 9,
+      "title": "CyberSea Festival 2025",
+      "description": "Physical and IoT security workshops at the CyberSea Festival in Constanta: lockpicking, physical penetration testing, IoT security and RTSP IP camera integration.",
+      "date": "2025-07-18",
+      "category": "Community",
+      "url": "https://cybersea.ro/",
+      "featured": false
+    },
+    {
+      "id": 8,
+      "title": "Cybersecurity and Artificial Intelligence Training Programme (PNRR)",
+      "description": "National programme run under Romania's Recovery and Resilience Plan: security fundamentals, penetration testing and red-teaming methodologies, identity and access management, application security, and AI/ML foundations including large language models.",
+      "date": "2025-03-10",
+      "category": "Education",
+      "url": null,
+      "featured": false
+    },
+    {
+      "id": 10,
+      "title": "CTFESCU 2025 (CTF Eminescu, 4th edition)",
+      "description": "Capture-the-flag competition covering cryptography, web application exploitation, reverse engineering, OSINT, steganography and artificial intelligence.",
+      "date": "2025-01-21",
+      "category": "Community",
+      "url": "https://ctfescu.unitbv.ro/",
+      "featured": false
+    },
+    {
+      "id": 11,
+      "title": "BVCYH_ Conference of Brasov Cyber Hub, 3rd edition",
+      "description": "Reverse engineering and malware analysis sessions: Ghidra and UPX unpacking, ransomware propagation, encryption and detection evasion, plus the NIS2 directive. Hosted by the Faculty of IESC, Transilvania University of Brasov.",
+      "date": "2024-10-02",
+      "category": "Conference",
+      "url": "https://bvcyh.ro/",
+      "featured": false
+    }
+  ]
+}
