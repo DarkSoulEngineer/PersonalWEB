@@ -8,8 +8,10 @@
     frontend/out/, which are served by any static file host.
 
     By default this script:
-      1. installs npm dependencies if node_modules/ is missing
-      2. runs `next build` if the static export in frontend/out/ is missing
+      1. installs npm dependencies if node_modules/ is missing or older than
+         package.json / package-lock.json
+      2. runs `next build` if frontend/out/ is missing or older than any source
+         file (src/, content/, data/, public/ or the config files)
       3. serves frontend/out/ on http://localhost:<Port> using a small,
          dependency-free Node static file server
 
@@ -59,7 +61,6 @@ if ($Port -lt 1 -or $Port -gt 65535) {
     throw "Invalid -Port '$Port'. Expected a value between 1 and 65535."
 }
 
-# Resolve the frontend/ directory relative to this script.
 $repoRoot = $PSScriptRoot
 $frontend = Join-Path $repoRoot 'frontend'
 
@@ -67,7 +68,6 @@ if (-not (Test-Path (Join-Path $frontend 'package.json'))) {
     throw "Could not find '$frontend\package.json'. Run this script from the repository root."
 }
 
-# prerequisites
 $node = Get-Command node -ErrorAction SilentlyContinue
 $npm  = Get-Command npm  -ErrorAction SilentlyContinue
 if (-not $node) { throw 'Node.js is required but was not found on PATH.' }
@@ -81,15 +81,25 @@ if ($nodeMajor -lt 20) {
 
 Push-Location $frontend
 try {
-    # dependencies
-    $nodeModules = Join-Path $frontend 'node_modules'
-    if ($Install -or -not (Test-Path $nodeModules)) {
+    $installMarker = Join-Path $frontend 'node_modules\.package-lock.json'
+    $manifests = @('package.json', 'package-lock.json') |
+        ForEach-Object { Join-Path $frontend $_ } |
+        Where-Object { Test-Path $_ }
+    $needsInstall = $Install -or -not (Test-Path $installMarker) -or
+        -not (Test-Path (Join-Path $frontend 'package-lock.json'))
+    if (-not $needsInstall) {
+        $installedAt = (Get-Item $installMarker).LastWriteTimeUtc
+        $needsInstall = [bool]($manifests | Where-Object { (Get-Item $_).LastWriteTimeUtc -gt $installedAt })
+    }
+    if ($needsInstall) {
         Write-Host 'Installing dependencies (npm install)...' -ForegroundColor Cyan
         & npm install
         if ($LASTEXITCODE -ne 0) { throw "npm install failed with exit code $LASTEXITCODE." }
+        if (Test-Path $installMarker) {
+            (Get-Item $installMarker).LastWriteTimeUtc = [DateTime]::UtcNow
+        }
     }
 
-    # development server
     if ($Dev) {
         Write-Host "Starting Next.js dev server at http://localhost:$Port ..." -ForegroundColor Cyan
         if ($Open) { Start-Process "http://localhost:$Port" }
@@ -97,11 +107,26 @@ try {
         exit $LASTEXITCODE
     }
 
-    # production static export
     $outDir = Join-Path $frontend 'out'
     $index  = Join-Path $outDir 'index.html'
 
-    if ($Build -or -not (Test-Path $index)) {
+    $needsBuild = $Build -or $needsInstall -or -not (Test-Path $index)
+    if (-not $needsBuild) {
+        $builtAt = (Get-Item $index).LastWriteTimeUtc
+        $sources = @(
+            @('src', 'content', 'data', 'public', 'scripts') |
+                ForEach-Object { Join-Path $frontend $_ } |
+                Where-Object { Test-Path $_ } |
+                ForEach-Object { Get-ChildItem $_ -Recurse -File }
+        ) + @(
+            @('next.config.ts', 'package.json', 'package-lock.json', 'tsconfig.json', 'vercel.json') |
+                ForEach-Object { Join-Path $frontend $_ } |
+                Where-Object { Test-Path $_ } |
+                ForEach-Object { Get-Item $_ }
+        )
+        $needsBuild = [bool]($sources | Where-Object { $_.LastWriteTimeUtc -gt $builtAt } | Select-Object -First 1)
+    }
+    if ($needsBuild) {
         Write-Host 'Building static export (npm run build)...' -ForegroundColor Cyan
         & npm run build
         if ($LASTEXITCODE -ne 0) { throw "next build failed with exit code $LASTEXITCODE." }
@@ -111,8 +136,6 @@ try {
         throw "Static export not found at '$outDir'. Run the script with -Build."
     }
 
-    # embedded, dependency-free static file server
-    # Written to a temp .mjs file so it can use ES module syntax.
     $serverJs = @'
 import { createServer } from "node:http";
 import { promises as fs } from "node:fs";
@@ -157,11 +180,6 @@ function isInside(target) {
   return rel === "" || (!rel.startsWith("..") && !path.isAbsolute(rel));
 }
 
-// Map a request path to a file, mirroring how Next.js emits static routes:
-//   /articles   -> articles.html
-//   /posts/x    -> posts/x.html
-//   /           -> index.html
-//   /dir/       -> dir/index.html
 async function resolveFile(urlPath) {
   let pathname;
   try {
@@ -171,25 +189,39 @@ async function resolveFile(urlPath) {
   }
 
   let target = path.join(root, path.normalize(pathname));
-  if (!isInside(target)) target = root;
+  if (!isInside(target)) return null;
 
   const candidates = pathname.endsWith("/")
     ? [path.join(target, "index.html")]
     : [target, target + ".html", path.join(target, "index.html")];
 
   for (const candidate of candidates) {
-    if (await isFile(candidate)) return candidate;
+    if (await isFile(candidate)) {
+      const real = await fs.realpath(candidate);
+      if (isInside(real)) return real;
+    }
   }
   return null;
 }
 
 function send(res, status, type, body) {
-  res.writeHead(status, { "Content-Type": type, "Cache-Control": "no-cache" });
+  res.writeHead(status, {
+    "Content-Type": type,
+    "Cache-Control": "no-cache",
+    "X-Content-Type-Options": "nosniff",
+    "X-Frame-Options": "DENY",
+    "Referrer-Policy": "no-referrer",
+    "Content-Security-Policy": "frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'none'",
+  });
   res.end(body);
 }
 
 const server = createServer(async (req, res) => {
   try {
+    if (req.method !== "GET" && req.method !== "HEAD") {
+      res.setHeader("Allow", "GET, HEAD");
+      return send(res, 405, "text/plain; charset=utf-8", "405 Method Not Allowed");
+    }
     const file = await resolveFile(req.url || "/");
     if (!file) {
       const notFound = path.join(root, "404.html");
@@ -201,7 +233,8 @@ const server = createServer(async (req, res) => {
     const type = MIME[path.extname(file).toLowerCase()] || "application/octet-stream";
     send(res, 200, type, await fs.readFile(file));
   } catch (err) {
-    send(res, 500, "text/plain; charset=utf-8", `500 Internal Server Error\n${err.stack}\n`);
+    console.error(err);
+    send(res, 500, "text/plain; charset=utf-8", "500 Internal Server Error");
   }
 });
 
@@ -214,7 +247,7 @@ server.on("error", (err) => {
   process.exit(1);
 });
 
-server.listen(port, () => {
+server.listen(port, "127.0.0.1", () => {
   console.log(`Serving static export: ${root}`);
   console.log(`  -> http://localhost:${port}`);
   console.log("Press Ctrl+C to stop.");

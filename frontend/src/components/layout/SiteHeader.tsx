@@ -2,44 +2,43 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { NAV_ITEMS } from "./nav";
 import ThemeToggle from "./ThemeToggle";
-
-const NAV = [
-  { href: "/projects", label: "Projects" },
-  { href: "/articles", label: "Articles" },
-  { href: "/cv", label: "CV" },
-] as const;
+import HeaderRadio from "@/components/radio/HeaderRadio";
 
 function isCurrent(pathname: string, href: string): boolean {
-  if (href === "/articles") {
-    return pathname === "/articles" || pathname.startsWith("/posts");
-  }
+  if (href === "/") return pathname === "/";
+  if (href === "/articles") return pathname === "/articles" || pathname.startsWith("/posts");
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 export default function SiteHeader() {
-  const pathname = usePathname() ?? "/";
+  const pathname = usePathname();
 
   return (
     <header className="site-header">
-      <div className="container site-header__inner">
-        <Link href="/" className="brand" aria-current={pathname === "/" ? "page" : undefined}>
-          Milchis
-        </Link>
+      <div className="container-page site-header__inner">
+        <HeaderRadio />
         <div className="site-header__end">
-          <nav className="site-nav" aria-label="Main">
-            {NAV.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className="nav-link"
-                aria-current={isCurrent(pathname, href) ? "page" : undefined}
-              >
-                {label}
-              </Link>
-            ))}
-          </nav>
-          <ThemeToggle />
+        <nav aria-label="Main">
+          <ul className="nav">
+            {NAV_ITEMS.map(({ href, label }) => {
+              const current = isCurrent(pathname, href);
+              return (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="nav-link"
+                    aria-current={current ? "page" : undefined}
+                  >
+                    {label}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+        <ThemeToggle />
         </div>
       </div>
     </header>

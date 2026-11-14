@@ -2,199 +2,122 @@
   {
     "id": 1,
     "name": "CC1101_DRIVER",
-    "description": "ESP-IDF driver for the TI CC1101 sub-GHz transceiver. A handle-based API drives several radios over one SPI bus, and RFuzz, a dual-radio serial console on ESP32-S3, is built on top of it.",
+    "description": "C driver for the CC1101 sub-GHz radio transceiver, used in embedded wireless systems and radio-frequency research.",
     "language": "C",
     "category": "RF & Embedded",
-    "stack": [
-      "ESP-IDF",
-      "ESP32-S3",
-      "SPI"
-    ],
     "url": "https://github.com/DarkSoulEngineer/CC1101_DRIVER",
-    "stars": 0,
-    "forks": 0,
     "featured": true,
-    "github_updated_at": "2026-11-02T17:43:04+02:00"
+    "github_updated_at": "2026-07-11"
+  },
+  {
+    "id": 8,
+    "name": "RTSP_TO_HTTP",
+    "description": "Converts RTSP streams (IP cameras) into HTTP streams for direct viewing in the browser.",
+    "language": "Python",
+    "category": "Networks",
+    "url": "https://github.com/DarkSoulEngineer/RTSP_TO_HTTP",
+    "featured": true,
+    "github_updated_at": "2025-08-13"
   },
   {
     "id": 2,
     "name": "modbus",
-    "description": "Command-line Modbus client for PLCs, drives and RTUs over TCP, UDP, RTU, ASCII and TLS. Scans register ranges, watches live values for changes, snapshots and restores device state, and ships its own simulator and interactive shell.",
+    "description": "Analysis of the Modbus protocol in industrial (OT/SCADA) systems, useful for testing the security of connected equipment.",
     "language": "Python",
     "category": "Security",
-    "stack": [
-      "Python",
-      "Modbus",
-      "TLS"
-    ],
     "url": "https://github.com/DarkSoulEngineer/modbus",
-    "stars": 0,
-    "forks": 0,
     "featured": true,
-    "github_updated_at": "2026-10-09T16:40:35+03:00"
-  },
-  {
-    "id": 3,
-    "name": "RTSP_TO_HTTP",
-    "description": "Grew out of the HiveHack IoT challenge at CyberSea: finds IP cameras that expose RTSP with default credentials, then re-streams them as HLS so any browser or smart TV can play them.",
-    "language": "Python",
-    "category": "Security",
-    "stack": [
-      "Python",
-      "FFmpeg",
-      "HLS"
-    ],
-    "url": "https://github.com/DarkSoulEngineer/RTSP_TO_HTTP",
-    "stars": 1,
-    "forks": 0,
-    "featured": true,
-    "github_updated_at": "2025-08-13T18:03:32+00:00"
-  },
-  {
-    "id": 4,
-    "name": "CST-MATLAB-2.4Ghz-Antenna",
-    "description": "2.4 GHz ISM microstrip antenna for IoT boards, modelled, simulated and post-processed in CST Studio Suite entirely from a MATLAB script, with S-parameter and far-field export.",
-    "language": "MATLAB",
-    "category": "RF & Embedded",
-    "stack": [
-      "MATLAB",
-      "CST Studio"
-    ],
-    "url": "https://github.com/DarkSoulEngineer/CST-MATLAB-2.4Ghz-Antenna",
-    "stars": 0,
-    "forks": 0,
-    "featured": true,
-    "github_updated_at": "2026-10-09T16:32:27+03:00"
+    "github_updated_at": "2026-08-13"
   },
   {
     "id": 5,
-    "name": "XDR_C2",
-    "description": "Security research toolkit behind one menu: a TCP command-and-control shell, Fernet file encryption, a ransomware simulation and LSB image steganography. Built for lab use only.",
-    "language": "Python",
-    "category": "Security",
-    "stack": [
-      "Python",
-      "sockets",
-      "cryptography"
-    ],
-    "url": "https://github.com/DarkSoulEngineer/XDR_C2",
-    "stars": 0,
-    "forks": 0,
+    "name": "CST-MATLAB-2.4Ghz-Antenna",
+    "description": "Microstrip ISM 2.4–2.5 GHz antenna designed in CST/MATLAB, for wireless microcontroller systems (IoT, embedded).",
+    "language": "MATLAB",
+    "category": "RF & Embedded",
+    "url": "https://github.com/DarkSoulEngineer/CST-MATLAB-2.4Ghz-Antenna",
     "featured": true,
-    "github_updated_at": "2026-10-09T16:40:52+03:00"
+    "github_updated_at": "2025-05-17"
+  },
+  {
+    "id": 4,
+    "name": "DOS-X_ASM",
+    "description": "16-bit graphical application in Assembly for DOS that draws directly to VRAM.",
+    "language": "Assembly",
+    "category": "Retro",
+    "url": "https://github.com/DarkSoulEngineer/DOS-X_ASM",
+    "featured": true,
+    "github_updated_at": "2026-01-09"
+  },
+  {
+    "id": 3,
+    "name": "infoTRON",
+    "description": "Teaching materials for introductory mechatronics workshops.",
+    "language": "C++",
+    "category": "Education",
+    "url": "https://github.com/DarkSoulEngineer/infoTRON",
+    "featured": true,
+    "github_updated_at": "2026-02-10"
   },
   {
     "id": 6,
-    "name": "DOS-X_ASM",
-    "description": "Drawing program for DOS in 8086 assembly. Renders in VGA Mode 13h by writing straight to video memory, with line and shape primitives and saving and loading of images.",
-    "language": "Assembly",
-    "category": "Low-level",
-    "stack": [
-      "8086 ASM",
-      "VGA",
-      "DOSBox"
-    ],
-    "url": "https://github.com/DarkSoulEngineer/DOS-X_ASM",
-    "stars": 0,
-    "forks": 2,
-    "featured": true,
-    "github_updated_at": "2026-10-09T16:40:50+03:00"
+    "name": "XDR_C2",
+    "description": "Research framework for Command & Control (C2) infrastructure, covering offensive exercises and XDR detection studies.",
+    "language": "Python",
+    "category": "Security",
+    "url": "https://github.com/DarkSoulEngineer/XDR_C2",
+    "featured": false,
+    "github_updated_at": "2025-06-25"
   },
   {
     "id": 7,
-    "name": "infoTRON",
-    "description": "ESP32 lab exercises for the infoTRON 2026 mechatronics workshops I mentored: GPIO and LED labs first, then an async web server with a JSON REST API that controls the board from a browser.",
-    "language": "C++",
-    "category": "Education",
-    "stack": [
-      "Arduino",
-      "ESP32",
-      "REST"
-    ],
-    "url": "https://github.com/DarkSoulEngineer/infoTRON",
-    "stars": 0,
-    "forks": 0,
-    "featured": true,
-    "github_updated_at": "2026-10-09T16:40:38+03:00"
-  },
-  {
-    "id": 8,
-    "name": "LaTeX_MiroBoard",
-    "description": "Miro app that spots LaTeX in board text boxes and renders it as formula images in a side panel, re-rendering when the source changes.",
-    "language": "JavaScript",
-    "category": "Web",
-    "stack": [
-      "Next.js",
-      "React",
-      "Miro SDK"
-    ],
-    "url": "https://github.com/DarkSoulEngineer/LaTeX_MiroBoard",
-    "stars": 0,
-    "forks": 0,
+    "name": "windots",
+    "description": "Automated Windows setup: PowerShell scripts for quickly installing and personalizing a development environment.",
+    "language": "PowerShell",
+    "category": "Utilities",
+    "url": "https://github.com/DarkSoulEngineer/windots",
     "featured": false,
-    "github_updated_at": "2026-11-10T01:37:31+02:00"
+    "github_updated_at": "2026-09-17"
   },
   {
     "id": 9,
-    "name": "windots",
-    "description": "Windows desktop setup with GlazeWM tiling, a yasb status bar, multi-monitor workspaces and a one-line installer.",
-    "language": "PowerShell",
-    "category": "Utilities",
-    "stack": [
-      "PowerShell",
-      "GlazeWM"
-    ],
-    "url": "https://github.com/DarkSoulEngineer/windots",
-    "stars": 0,
-    "forks": 0,
-    "featured": false,
-    "github_updated_at": "2026-10-09T16:40:30+03:00"
-  },
-  {
-    "id": 10,
-    "name": "Brainrot",
-    "description": "Java Swing experiment in controlled chaos: erratic pop-up windows, meme bombardment and glitch audio, all stopped by a kill switch. Built to see how far Swing and users can be pushed.",
-    "language": "Java",
-    "category": "Experiments",
-    "stack": [
-      "Java",
-      "Swing"
-    ],
-    "url": "https://github.com/DarkSoulEngineer/Brainrot",
-    "stars": 0,
-    "forks": 1,
-    "featured": false,
-    "github_updated_at": "2026-10-09T16:40:57+03:00"
-  },
-  {
-    "id": 11,
-    "name": "Pyroute",
-    "description": "Routing algorithm that finds the optimal path between two MAC addresses in a hierarchical JSON structure and returns the shortest route.",
-    "language": "Python",
-    "category": "Networks",
-    "stack": [
-      "Python"
-    ],
-    "url": "https://github.com/DarkSoulEngineer/Pyroute",
-    "stars": 0,
-    "forks": 0,
-    "featured": false,
-    "github_updated_at": "2026-10-09T16:41:03+03:00"
-  },
-  {
-    "id": 12,
     "name": "PySelenium-Bandcamp",
     "description": "Scraper that collects song titles and links from Bandcamp for a given list of artists.",
     "language": "Python",
     "category": "Automation",
-    "stack": [
-      "Python"
-    ],
     "url": "https://github.com/DarkSoulEngineer/PySelenium-Bandcamp",
-    "stars": 0,
-    "forks": 0,
     "featured": false,
-    "github_updated_at": "2026-10-09T16:41:01+03:00"
+    "github_updated_at": "2025-06-11"
+  },
+  {
+    "id": 10,
+    "name": "LaTeX_MiroBoard",
+    "description": "Detects LaTeX formatting in Miro text boxes, using the Miro SDK.",
+    "language": "JavaScript",
+    "category": "Web",
+    "url": "https://github.com/DarkSoulEngineer/LaTeX_MiroBoard",
+    "featured": false,
+    "github_updated_at": "2025-02-20"
+  },
+  {
+    "id": 11,
+    "name": "Brainrot",
+    "description": "\"Brainrot OVERLOAD\": an educational graphical virus in Java, built to understand infection and display mechanisms.",
+    "language": "Java",
+    "category": "Security",
+    "url": "https://github.com/DarkSoulEngineer/Brainrot",
+    "featured": false,
+    "github_updated_at": "2025-02-19"
+  },
+  {
+    "id": 12,
+    "name": "Pyroute",
+    "description": "Routing algorithm that finds the optimal path between two MAC addresses in a hierarchical JSON structure and returns the shortest route.",
+    "language": "Python",
+    "category": "Networks",
+    "url": "https://github.com/DarkSoulEngineer/Pyroute",
+    "featured": false,
+    "github_updated_at": "2024-12-02"
   },
   {
     "id": 13,
@@ -202,13 +125,8 @@
     "description": "Conversion of images between the RGB and XYZ color spaces via matrix transformations.",
     "language": "Python",
     "category": "Utilities",
-    "stack": [
-      "Python"
-    ],
     "url": "https://github.com/DarkSoulEngineer/RGBConverter",
-    "stars": 0,
-    "forks": 0,
     "featured": false,
-    "github_updated_at": "2026-10-09T16:41:06+03:00"
+    "github_updated_at": "2024-11-29"
   }
 ]

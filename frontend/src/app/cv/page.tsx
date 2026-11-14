@@ -1,52 +1,32 @@
-import type { Metadata } from "next";
 import CvView from "@/components/cv/CvView";
+import JsonLd from "@/components/ui/JsonLd";
 import { getCv } from "@/lib/cv";
+import { pageMetadata } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/site";
+import { breadcrumbSchema, profilePageSchema } from "@/lib/structured-data";
 
-export const metadata: Metadata = {
-  title: "CV",
-  description:
-    "Curriculum vitae of Catalin-Marian Milchis: penetration testing, cybersecurity and software engineering.",
-  openGraph: {
-    title: "CV · Milchis Catalin-Marian",
-    description:
-      "Experience, education, skills and achievements of Catalin-Marian Milchis: penetration tester and software engineer.",
-    type: "profile",
-  },
-};
+const TITLE = "CV";
+const DESCRIPTION =
+  "CV of Milchis Catalin-Marian: penetration tester at Arvato Systems Romania, telecom R&D at Mitel Networks and 4th-year Telecommunications student in Brasov. Experience, tools, projects and achievements.";
+
+export const metadata = pageMetadata({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: "/cv",
+  type: "profile",
+});
 
 export default function CvPage() {
-  const cv = getCv();
-  const { profile } = cv;
-
-  const personJsonLd = {
-    "@context": "https://schema.org",
-    "@type": "Person",
-    name: profile.name,
-    alternateName: profile.aliases,
-    jobTitle: profile.headline.replace(/\s+/g, " ").trim(),
-    email: `mailto:${cv.contact.email}`,
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: profile.location.split(",")[0]?.trim(),
-      addressCountry: "RO",
-    },
-    sameAs: [profile.links.linkedin, profile.links.github],
-    knowsAbout: profile.skills,
-    alumniOf: {
-      "@type": "CollegeOrUniversity",
-      name: profile.education.school,
-    },
-  };
-
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(personJsonLd).replace(/</g, "\\u003c"),
-        }}
+      <JsonLd data={profilePageSchema("/cv", `${TITLE} | ${SITE_NAME}`, DESCRIPTION)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: TITLE, path: "/cv" },
+        ])}
       />
-      <CvView cv={cv} />
+      <CvView cv={getCv()} />
     </>
   );
 }

@@ -32,14 +32,3 @@ export function formatDate(iso: string | null | undefined): string {
     minute: "2-digit",
   });
 }
-
-/** "2025-07-28" -> "Jul 2025". Used where space is tight (printed CV). */
-export function formatMonthYear(iso: string | null | undefined): string {
-  if (!iso) return "";
-  const [y, m] = iso.slice(0, 7).split("-").map(Number);
-  if (!y || !m) return iso;
-  return new Date(y, m - 1, 1).toLocaleDateString("en-GB", {
-    month: "short",
-    year: "numeric",
-  });
-}

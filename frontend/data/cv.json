@@ -1,70 +1,55 @@
 {
-  "photo": "/profile.png",
-  "summary": "Penetration tester at Arvato Systems and Lynx Security, junior software engineer at Mitel Networks, and Electrical Engineering and Computer Science student in Brasov. Focused on radio-frequency, embedded and industrial targets, writing own tooling in C and Python, from firmware drivers to protocol clients.",
+  "photo": "/profile.jpg",
+  "title": "Penetration Tester | Telecom",
+  "summary": "Penetration tester and 4th-year Telecommunications student at Transilvania University of Brasov. Hands-on experience in web and API penetration testing on client assessments at Arvato Systems Romania and in telecom R&D at Mitel Networks Romania on the OpenScape 4000 platform (tooling, system configuration and virtualisation), backed by CTF competitions representing UNITBV and the Google.org Cybersecurity Seminars run with Virtual Routes.",
   "contact": {
     "email": "milchiscatalin@gmail.com"
-  },
-  "print": {
-    "detailedRoles": 4,
-    "maxProjects": 4,
-    "projectCategories": [
-      "RF & Embedded",
-      "Security"
-    ],
-    "maxAchievements": 5
   },
   "experience": [
     {
       "organization": "Arvato Systems Romania",
-      "role": "Penetration Tester",
+      "role": "Junior Penetration Tester (part-time)",
       "period": "Present",
       "current": true,
       "points": [
-        "Run security assessments of web applications and APIs, from testing and analysis to the written report.",
-        "Extend offensive-security methodology and tooling alongside client engagements."
+        "Perform web application and API penetration tests, from scoping to reporting and remediation advice.",
+        "Research AI frameworks to assist penetration testing workflows.",
+        "Expand offensive-security methodology and tooling on real client engagements."
       ]
     },
     {
-      "organization": "Lynx Security",
-      "role": "Penetration Tester",
-      "period": "Present",
-      "current": true,
-      "points": []
-    },
-    {
       "organization": "Mitel Networks Romania",
-      "role": "Junior Software Engineer",
+      "role": "Junior Software Engineer (part-time), Telecom R&D",
       "period": "Present",
       "current": true,
       "points": [
-        "Build internal tools in Python and JavaScript for the OpenScape 4000 Assistant Manager.",
-        "Work across Hyper-V virtual machines, Linux and C components of OpenScape 4000 telecom configurations."
+        "Develop internal Python and JavaScript tooling for the OpenScape 4000 telecom platform (Assistant Manager team).",
+        "Work with Hyper-V, Linux and C components across telecom system configurations."
       ]
     },
     {
       "organization": "Brasov Cybersecurity Community",
-      "role": "Member & Speaker",
+      "role": "Member",
       "period": "Present",
       "current": true,
       "points": [
-        "Speak on wireless security at local community events.",
-        "Also a member of the Invata Cyber Community."
+        "Active member of the local cybersecurity community: meetups and workshops."
       ]
     },
     {
       "organization": "Mitel Networks Romania",
       "role": "Student Intern",
-      "period": "May to Jun 2025",
+      "period": "May–Jun 2025",
       "current": false,
       "points": [
-        "Configured and virtualised OpenScape 4000 telecom systems and worked on C-level components.",
-        "First hands-on work with carrier-grade telephony platforms and how they are tested."
+        "OpenScape 4000 telecom systems: system configuration, virtualisation and C-level work.",
+        "First hands-on exposure to carrier-grade telephony platforms and their testing practices."
       ]
     },
     {
       "organization": "Schaeffler Romania SRL",
       "role": "CNC Machine Operator",
-      "period": "Aug 2019 to May 2022",
+      "period": "Aug 2019–May 2022",
       "current": false,
       "points": [
         "Operated CNC machine tools at the Cristian (Brasov) production site.",
@@ -74,59 +59,64 @@
   ],
   "skillGroups": [
     {
-      "group": "Security",
+      "group": "Offensive security",
       "items": [
-        "Web and API penetration testing",
-        "Vulnerability assessment",
-        "Wi-Fi and sub-GHz RF",
-        "Software defined radio (GNU Radio, URH)",
-        "OT and Modbus",
-        "Reverse engineering (Ghidra, GDB)",
+        "Web & API penetration testing",
+        "vulnerability assessment",
+        "recon and content discovery",
+        "reverse engineering",
         "CTF"
-      ]
-    },
-    {
-      "group": "Programming",
-      "items": [
-        "C",
-        "C++",
-        "Python",
-        "x86 Assembly",
-        "JavaScript",
-        "Java",
-        "MATLAB",
-        "SQL",
-        "VHDL",
-        "Bash",
-        "PowerShell"
-      ]
-    },
-    {
-      "group": "Embedded and RF",
-      "items": [
-        "ESP32 and ESP-IDF",
-        "Arduino",
-        "PlatformIO",
-        "KiCad",
-        "CST Studio Suite",
-        "SPI"
       ]
     },
     {
       "group": "Tools",
       "items": [
-        "Linux (Kali, Arch)",
-        "Windows",
-        "Docker",
-        "Git",
+        "Burp Suite Pro",
+        "Nuclei",
+        "Nessus",
+        "Metasploit",
+        "sqlmap",
+        "Nmap",
+        "ffuf",
+        "Gobuster",
+        "feroxbuster",
+        "Hydra",
+        "Hashcat",
+        "Bruno",
         "Wireshark",
-        "nmap",
-        "Hyper-V",
+        "Ghidra"
+      ]
+    },
+    {
+      "group": "Telecom & networks",
+      "items": [
+        "OpenScape 4000",
+        "TCP/IP networking",
+        "Modbus"
+      ]
+    },
+    {
+      "group": "Programming",
+      "items": [
+        "Python",
+        "C / C++",
+        "Embedded C",
+        "Assembly",
+        "JavaScript",
+        "PowerShell",
+        "Bash"
+      ]
+    },
+    {
+      "group": "Systems",
+      "items": [
+        "Kali Linux",
+        "Linux",
+        "Windows",
         "VMware",
-        "QEMU",
-        "Proxmox",
-        "Selenium",
-        "LaTeX"
+        "Hyper-V",
+        "Docker",
+        "Git"
       ]
     },
     {
@@ -137,41 +127,20 @@
       ]
     }
   ],
+  "interests": [
+    "Wireless and RF security",
+    "software-defined radio",
+    "hardware hacking",
+    "antenna design"
+  ],
   "achievements": [
     {
-      "id": 15,
-      "title": "DefCamp 2026",
-      "description": "Volunteer at the 16th edition of DefCamp, the largest cybersecurity conference in Central and Eastern Europe, at the Palace of the Parliament in Bucharest.",
-      "date": "2026-11-19",
-      "category": "Conference",
-      "url": "https://def.camp/",
-      "featured": false
-    },
-    {
-      "id": 13,
-      "title": "CyberSea Festival 2026",
-      "description": "Second edition of the CyberSea Festival in Mamaia, Constanta, organised by Women4Cyber Romania: hackathon-style competitions, hands-on workshops, mentoring and Cyber Villages on AI, secure by design and ethical hacking.",
-      "date": "2026-07-28",
-      "category": "Community",
-      "url": "https://cybersea.ro/",
-      "featured": false
-    },
-    {
-      "id": 14,
-      "title": "DefCamp 2025",
-      "description": "Volunteer at the 15th edition of DefCamp, the largest cybersecurity conference in Central and Eastern Europe, at the Palace of the Parliament in Bucharest.",
-      "date": "2025-11-13",
-      "category": "Conference",
-      "url": "https://def.camp/",
-      "featured": false
-    },
-    {
       "id": 12,
-      "title": "Vulnerability assessment at Regional Brasov Hospital",
-      "description": "Vulnerability assessment conducted for the Regional Brasov Hospital within the Google Seminars Virtual Routes programme.",
+      "title": "Google.org Cybersecurity Seminars: vulnerability assessment for Regional Brasov Hospital",
+      "description": "Selected for the Google.org Cybersecurity Seminars programme, run in collaboration with Virtual Routes at Transilvania University of Brasov, in which trained students deliver security services to local organisations. Conducted a vulnerability assessment for the Regional Brasov Hospital.",
       "date": "2025-10-07",
-      "category": "Training",
-      "url": "https://virtual-routes.org/initiatives/cybersecurity-seminars/",
+      "category": "Programme",
+      "url": "https://virtual-routes.org/university/transilvania-university-of-brasov-university-of-west-timisoara-ro/",
       "featured": true
     },
     {
@@ -194,11 +163,11 @@
     },
     {
       "id": 9,
-      "title": "CyberSea Festival 2025",
-      "description": "Physical and IoT security workshops at the CyberSea Festival in Constanta: lockpicking, physical penetration testing, IoT security and RTSP IP camera integration.",
-      "date": "2025-07-18",
+      "title": "Volunteer at DefCamp; attended CyberSea Festival and DevTalks",
+      "description": "Volunteered at DefCamp and attended talks and workshops at CyberSea Festival and DevTalks.",
+      "date": null,
       "category": "Community",
-      "url": "https://cybersea.ro/",
+      "url": null,
       "featured": false
     },
     {
@@ -221,7 +190,7 @@
     },
     {
       "id": 11,
-      "title": "BVCYH_ Conference of Brasov Cyber Hub, 3rd edition",
+      "title": "BVCYH, Brasov Cyber Hub Conference (3rd edition)",
       "description": "Reverse engineering and malware analysis sessions: Ghidra and UPX unpacking, ransomware propagation, encryption and detection evasion, plus the NIS2 directive. Hosted by the Faculty of IESC, Transilvania University of Brasov.",
       "date": "2024-10-02",
       "category": "Conference",

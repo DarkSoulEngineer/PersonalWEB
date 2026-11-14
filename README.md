@@ -9,12 +9,29 @@ HTML. There is no backend or database.
 
 ## Features
 
-- Home: introduction, selected work and recent highlights
+- Home: profile, focus areas, selected projects and latest articles
 - Articles archive at `/articles` with tag filtering (`/articles?tag=...`) and pagination
 - Post pages rendered from GitHub-flavored Markdown
 - Projects page with a client-side language filter
-- CV page with a one-page print / Save as PDF sheet
+- CV page with a two-page, ATS-friendly print-to-PDF layout
 - Radio player (SomaFM "Seven Inch Soul")
+- Light and dark theme (follows the system setting, toggle in the header)
+
+## SEO
+
+- Per-page titles, descriptions and canonical URLs (`src/lib/seo.ts`)
+- Open Graph and Twitter cards with a shared preview image (`public/og.jpg`)
+- JSON-LD structured data: `Person`, `WebSite`, `ProfilePage`, `BreadcrumbList`, `BlogPosting` (`src/lib/structured-data.ts`)
+- Generated `sitemap.xml`, `robots.txt` and `manifest.webmanifest`
+- Favicons and app icons in `src/app/` and `public/`
+
+Absolute URLs come from `NEXT_PUBLIC_SITE_URL`. On Vercel this falls back to the
+production domain automatically (`VERCEL_PROJECT_PRODUCTION_URL`). Set it in the
+Vercel project settings if you use a custom domain:
+
+```
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+```
 
 ## Tech stack
 
@@ -42,11 +59,11 @@ PersonalWEB/
     │   │   ├── layout/        # SiteHeader, SiteFooter
     │   │   ├── home/          # HomeView
     │   │   ├── articles/      # ArticlesView
-    │   │   ├── projects/      # ProjectsView
+    │   │   ├── projects/      # ProjectsView, ProjectCard
     │   │   ├── cv/            # CvView, CvIndex, PrintButton
-    │   │   ├── radio/         # RadioProvider, player, hero button
-    │   │   └── ui/            # Markdown
-    │   └── lib/               # posts, profile, projects, cv, languages, format, types
+    │   │   ├── radio/         # RadioProvider, player controls
+    │   │   └── ui/            # PageHeader, SectionHeader, JsonLd, Markdown, icons
+    │   └── lib/               # posts, profile, projects, cv, seo, site, structured-data
     ├── content/posts/         # Markdown articles (frontmatter + body)
     ├── data/                  # profile, projects, cv (JSON)
     └── public/                # static assets (images)
@@ -79,6 +96,44 @@ cd frontend
 npm run lint
 ```
 
+## Security checks
+
+```powershell
+cd frontend
+npm audit
+npm test
+npm run lint
+npm run build
+```
+
+- A scoped `minimatch` override fixes GHSA-g3hv-75wg-m249 in the TypeScript
+  lint tooling. Remove it when the parent dependency adopts a patched version.
+- The build adds a per-page Content Security Policy to the static HTML. Inline
+  JavaScript is allowed only by its build-generated SHA-256 hash; event-handler
+  attributes, plugins and form submissions are blocked. Inline CSS remains
+  allowed for React styles. Edit source files and rebuild rather than modifying
+  exported scripts after hashing.
+- `vercel.json` adds anti-framing, MIME-sniffing, referrer and
+  browser-permission protections. Vercel provides HTTPS and HSTS.
+- Markdown uses `react-markdown`'s default URL filtering without raw HTML
+  execution. JSON-LD escapes `<` to prevent script-tag breakout.
+- `start.ps1` serves locally on `127.0.0.1`, restricts files to the export
+  directory, and does not expose error stack traces to browsers.
+
+These checks address known findings; they are not a guarantee that the site is
+free of all vulnerabilities.
+
+## Deploying to Vercel
+
+Keep Vercel's **Root Directory** set to `.` (the repository root). The root
+`vercel.json` preserves the existing deployment setup: install with
+`npm --prefix frontend ci`, build with `npm run build`, and serve `frontend/out`
+with clean URLs. The root build command delegates to the frontend build,
+including its security post-processing. Pushing `main` triggers the connected
+production deployment. The HTTP headers are Vercel-specific; other hosts need
+equivalent configuration. `frontend/vercel.json` also supports deploying the
+frontend directory directly.
+
 ## Authoring content
 
 Content lives in `frontend/` and is read at build time.
@@ -103,47 +158,9 @@ Article body in Markdown.
 
 | File              | Used by                |
 | ----------------- | ---------------------- |
-| `profile.json`    | Home, CV, footer       |
+| `profile.json`    | Home, footer, SEO      |
 | `projects.json`   | Projects page          |
 | `cv.json`         | CV page (achievements included) |
-
-## Deploying to Vercel
-
-Deploy from the repository root (leave Vercel's Root Directory set to `.`).
-The root `vercel.json` installs the frontend dependencies, builds the Next.js
-static export, and serves only `frontend/out/`. Clean URLs keep routes such as
-`/articles`, `/projects`, and `/cv` accessible without `.html` extensions.
-
-```powershell
-npm run build       # optional local build check (install frontend dependencies first)
-npx vercel --prod   # build and update the production site
-```
-
-### Automatic deployments from GitHub
-
-The Vercel project `personal` is connected to `DarkSoulEngineer/PersonalWEB`.
-Push to `main` to build and update production automatically. Pushes to other
-branches and pull requests create preview deployments. A local commit alone
-does not deploy: push it to GitHub.
-
-```powershell
-git add <changed-files>
-git commit -m "Update site"
-git push origin main
-```
-
-Keep the Vercel Root Directory at `.` and Production Branch at `main`.
-No GitHub Actions workflow or Vercel token in the repository is needed.
-Never commit `.env*`, `.vercel/`, credentials, or generated build output.
-All content in `frontend/data/` and `frontend/public/` may be published on the
-website, even though the GitHub repository is private.
-
-Before pushing, run `npm audit --prefix frontend`,
-`npm run lint --prefix frontend`, and `npm run build`.
-Check the commit's Vercel status on GitHub and its deployment logs afterward.
-
-`npx vercel` without `--prod` creates a preview deployment. If visitors see a
-Vercel login page, review Project Settings → Deployment Protection for Production.
 
 ## Deploying to GitHub Pages
 
@@ -162,30 +179,3 @@ const nextConfig: NextConfig = {
 Then publish the contents of `frontend/out/` (for example with the `gh-pages`
 package or a GitHub Actions workflow). Omit `basePath`/`assetPrefix` if the site
 is served from the domain root.
-
-## Printed CV
-
-"Save PDF" on `/cv` prints a separate one-page A4 sheet
-(`src/components/cv/CvPrint.tsx`), not the screen layout. It is filled from the
-same JSON as the site. The `print` block in `data/cv.json` controls what fits:
-
-| Key                 | Meaning                                                       |
-| ------------------- | ------------------------------------------------------------- |
-| `detailedRoles`     | How many roles print with bullet points (later ones: one line) |
-| `maxProjects`       | How many featured projects to list                            |
-| `projectCategories` | Only featured projects in these categories are listed         |
-| `maxAchievements`   | How many achievements to list (`featured` ones first)         |
-
-If the sheet spills onto a second page after you add content, lower one of
-these numbers.
-
-## Themes
-
-The site has a dark and a light theme. The first visit follows the visitor's
-system setting; the sun/moon button in the header switches it and the choice
-is remembered in the browser (`localStorage`, key `theme`). Colours live as CSS
-variables at the top of `src/app/globals.css`: `:root` is dark,
-`:root[data-theme="light"]` is light. Use `--accent` for fills (buttons, dots)
-and `--accent-text` for text, because the bright lime is unreadable as text on
-the light background. The printed CV ignores the theme and is always black on
-white.

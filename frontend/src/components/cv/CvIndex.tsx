@@ -2,52 +2,50 @@
 
 import { useEffect, useState } from "react";
 
-const SECTIONS = [
+export const CV_SECTIONS = [
   { id: "summary", label: "Profile" },
   { id: "experience", label: "Experience" },
+  { id: "skills", label: "Skills" },
+  { id: "work", label: "Projects" },
   { id: "education", label: "Education" },
-  { id: "achievements", label: "Achievements" },
+  { id: "achievements", label: "Training" },
 ] as const;
 
 export function CvIndex() {
-  const [activeId, setActiveId] = useState<string>("summary");
+  const [activeId, setActiveId] = useState<string>(CV_SECTIONS[0].id);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveId(entry.target.id);
-          }
-        });
+        for (const entry of entries) {
+          if (entry.isIntersecting) setActiveId(entry.target.id);
+        }
       },
-      {
-        rootMargin: "-20% 0px -60% 0px",
-        threshold: 0,
-      }
+      { rootMargin: "-20% 0px -60% 0px", threshold: 0 },
     );
 
-    const elements = SECTIONS.map((s) => document.getElementById(s.id)).filter(Boolean);
-    elements.forEach((el) => observer.observe(el!));
-
+    for (const section of CV_SECTIONS) {
+      const el = document.getElementById(section.id);
+      if (el) observer.observe(el);
+    }
     return () => observer.disconnect();
   }, []);
 
   return (
-    <nav className="cv-index" aria-label="Sections">
-      <ol className="cv-index-list">
-        {SECTIONS.map((section) => (
+    <nav className="cv-index" aria-label="CV sections">
+      <ul className="nav">
+        {CV_SECTIONS.map((section) => (
           <li key={section.id}>
             <a
               href={`#${section.id}`}
-              className={`cv-index-link${activeId === section.id ? " cv-index-link--active" : ""}`}
-              aria-current={activeId === section.id ? "location" : undefined}
+              className="nav-link"
+              aria-current={activeId === section.id ? "true" : undefined}
             >
               {section.label}
             </a>
           </li>
         ))}
-      </ol>
+      </ul>
     </nav>
   );
 }

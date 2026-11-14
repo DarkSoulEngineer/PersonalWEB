@@ -1,8 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 
-import type { PostDetail, PostListItem, Stats, Tag } from "./types";
-
+import type { PostDetail, PostListItem, Tag } from "./types";
 
 interface Frontmatter {
   title?: string;
@@ -55,7 +54,6 @@ function makeExcerpt(body: string, maxLength = 200): string {
   return plain.length > maxLength ? `${plain.slice(0, maxLength).trimEnd()}…` : plain;
 }
 
-
 interface RawPost {
   slug: string;
   title: string;
@@ -68,13 +66,7 @@ interface RawPost {
 
 const POSTS_DIR = path.join(process.cwd(), "content", "posts");
 
-/**
- * Fallback slug rendered when the archive is empty.
- *
- * With `output: "export"` a dynamic route must pre-render at least one path, so
- * an empty `content/posts/` would otherwise fail the whole production build.
- * The posts page shows an "archive empty" state for this slug instead.
- */
+// Static export needs at least one pre-rendered path, so an empty archive renders this placeholder.
 export const EMPTY_POST_SLUG = "no-posts";
 
 export function hasPosts(): boolean {
@@ -147,6 +139,7 @@ export function getPost(slug: string): PostDetail | null {
     tags: post.tags,
     created_at: post.date || null,
     updated_at: post.updated,
+    excerpt: makeExcerpt(post.body, 160),
   };
 }
 
@@ -162,12 +155,4 @@ export function getTags(): Tag[] {
   return [...counts.entries()]
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .map(([name, posts_count]) => ({ id: name, name, posts_count }));
-}
-
-export function getStats(): Stats {
-  const list = getPostList();
-  return {
-    posts: list.length,
-    tags: getTags().length,
-  };
 }

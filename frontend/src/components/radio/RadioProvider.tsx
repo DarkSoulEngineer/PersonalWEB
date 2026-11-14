@@ -8,7 +8,6 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import FloatingRadio from "./FloatingRadio";
 import {
   RADIO_SRC,
   RadioContext,
@@ -16,14 +15,6 @@ import {
   type RadioStatus,
 } from "./radio-context";
 
-/**
- * Owns the one and only <audio> element for the station.
- *
- * It lives in the root layout, which Next.js keeps mounted across client-side
- * navigation, so playback continues while the visitor moves between pages
- * (the site's "tabs"). Every play/pause control on the site talks to this
- * provider instead of holding its own audio element.
- */
 export default function RadioProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [status, setStatus] = useState<RadioStatus>("paused");
@@ -31,18 +22,10 @@ export default function RadioProvider({ children }: { children: ReactNode }) {
   const [volume, setVolumeState] = useState(0.8);
   const [muted, setMutedState] = useState(false);
 
-  // Reflect the volume state onto the element (also right after it mounts).
   useEffect(() => {
     if (audioRef.current) audioRef.current.volume = volume;
   }, [volume]);
 
-  // Let the footer make room for the player while it is on screen.
-  useEffect(() => {
-    document.body.classList.toggle("has-player", open);
-    return () => document.body.classList.remove("has-player");
-  }, [open]);
-
-  // Reflect the mute state onto the element.
   useEffect(() => {
     if (audioRef.current) audioRef.current.muted = muted;
   }, [muted]);
@@ -117,7 +100,6 @@ export default function RadioProvider({ children }: { children: ReactNode }) {
         }
         onError={() => setStatus("error")}
       />
-      <FloatingRadio />
     </RadioContext.Provider>
   );
 }

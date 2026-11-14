@@ -1,105 +1,18 @@
-import CvPrint from "@/components/cv/CvPrint";
-import PrintButton from "@/components/cv/PrintButton";
 import { CvIndex } from "@/components/cv/CvIndex";
-import { formatDateOnly } from "@/lib/format";
+import PrintButton from "@/components/cv/PrintButton";
+import { GitHubIcon, LinkedInIcon, MailIcon, PinIcon } from "@/components/ui/icons";
+import { languageColor } from "@/lib/projects";
 import type { Cv } from "@/lib/types";
 
-function SectionHead({ title, meta }: { title: string; meta?: string }) {
-  return (
-    <header className="cv-section-head">
-      <h2 className="cv-section-title">{title}</h2>
-      {meta ? <span className="label">{meta}</span> : null}
-    </header>
-  );
+function displayUrl(url: string): string {
+  return url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/+$/, "");
 }
 
-function CvRail({ cv }: { cv: Cv }) {
-  const { profile } = cv;
-  const [firstName, ...restName] = profile.name.split(" ");
-  const [handle, ...altHandles] = profile.aliases;
-
-  return (
-    <aside className="cv-rail" aria-label="Profile and contact">
-      <div className="cv-rail-inner">
-        <div className="cv-head">
-          <div className="cv-ident">
-            <h1 className="cv-name">
-              {restName.join(" ")} <span className="cv-name-rest">{firstName}</span>
-            </h1>
-            <p className="cv-handles">
-              @{handle}
-              {altHandles.length > 0
-                ? `, also ${altHandles.map((h) => `@${h}`).join(", ")}`
-                : null}
-            </p>
-            <p className="cv-headline">{profile.headline.replace(/\s*\n\s*/g, " ")}</p>
-            <p className="cv-location">{profile.location}</p>
-          </div>
-
-          <figure className="cv-portrait">
-            <img
-              src={cv.photo ?? profile.photo}
-              alt={`Portrait of ${profile.name}`}
-              width={240}
-              height={240}
-            />
-          </figure>
-        </div>
-
-        <nav className="cv-contact" aria-label="Contact">
-          <ul className="cv-kv">
-            <li className="cv-kv-row">
-              <span className="cv-kv-key">Email</span>
-              <a
-                href={`mailto:${cv.contact.email}`}
-                className="cv-kv-val link"
-              >
-                {cv.contact.email}
-              </a>
-            </li>
-            <li className="cv-kv-row">
-              <span className="cv-kv-key">LinkedIn</span>
-              <a
-                href={profile.links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cv-kv-val link"
-              >
-                Profile
-              </a>
-            </li>
-            <li className="cv-kv-row">
-              <span className="cv-kv-key">GitHub</span>
-              <a
-                href={profile.links.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cv-kv-val link"
-              >
-                Repositories
-              </a>
-            </li>
-          </ul>
-        </nav>
-
-        <div className="cv-skills">
-          <p className="label">Skills</p>
-          {cv.skillGroups.map((group) => (
-            <div key={group.group} className="cv-skill-group">
-              <p className="cv-skill-key">{group.group}</p>
-              <ul className="cv-skill-list">
-                {group.items.map((item) => (
-                  <li key={item} className="cv-skill">
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-    </aside>
-  );
+function formatMonth(iso: string | null): string {
+  if (!iso) return "";
+  const [y, m] = iso.split("-").map(Number);
+  if (!y || !m) return iso;
+  return new Date(y, m - 1, 1).toLocaleDateString("en-GB", { month: "short", year: "numeric" });
 }
 
 export default function CvView({ cv }: { cv: Cv }) {
@@ -107,135 +20,192 @@ export default function CvView({ cv }: { cv: Cv }) {
   const { education } = profile;
 
   return (
-    <div className="cv-root">
-      {/* Printing swaps the whole screen layout for the compact sheet. */}
-      <CvPrint cv={cv} />
-
-      <div className="cv-screen">
-      <div className="cv-docbar">
-        <CvIndex />
-        <PrintButton />
-      </div>
-
-      <div className="cv-page">
-        <div className="cv-shell">
-          <CvRail cv={cv} />
-
-          <div className="cv-main">
-            {/* Summary */}
-            <section
-              id="summary"
-              className="cv-section cv-summary"
-              aria-labelledby="cv-summary-title"
-            >
-              <h2 id="cv-summary-title" className="label">
-                Profile
-              </h2>
-              <p className="cv-summary-text">{cv.summary}</p>
-            </section>
-
-            {/* Experience */}
-            <section
-              id="experience"
-              className="cv-section"
-              aria-label="Experience"
-            >
-              <SectionHead title="Experience" />
-              <ol className="cv-rules">
-                {cv.experience.map((job) => (
-                  <li key={`${job.organization}-${job.role}`} className="cv-rule">
-                    <div className="cv-rule-meta">
-                      {/* "Present" already says it is current; the accent dot marks it */}
-                      <span className={`cv-rule-period${job.current ? " cv-flag" : ""}`}>
-                        {job.period}
-                      </span>
-                    </div>
-                    <div className="cv-rule-main">
-                      <h3 className="cv-row-title">{job.role}</h3>
-                      <p className="cv-row-org">{job.organization}</p>
-                      <ul className="cv-points">
-                        {job.points.map((point) => (
-                          <li key={point}>{point}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </section>
-
-            <section id="education" className="cv-section" aria-label="Education">
-              <SectionHead title="Education" />
-              <div className="cv-edu">
-                <h3 className="cv-edu-school">
-                  {education.school}
-                </h3>
-                <dl className="cv-kv cv-kv-block">
-                  <div className="cv-kv-row">
-                    <dt className="cv-kv-key">Faculty</dt>
-                    <dd className="cv-kv-val">{education.faculty}</dd>
-                  </div>
-                  <div className="cv-kv-row">
-                    <dt className="cv-kv-key">Domain</dt>
-                    <dd className="cv-kv-val">{education.domain}</dd>
-                  </div>
-                  <div className="cv-kv-row">
-                    <dt className="cv-kv-key">Extracurricular</dt>
-                    <dd className="cv-kv-val">
-                      <ul className="cv-extras">
-                        {education.extracurriculars.map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
-                    </dd>
-                  </div>
-                </dl>
-              </div>
-            </section>
-
-            <section
-              id="achievements"
-              className="cv-section"
-              aria-label="Achievements"
-            >
-              <SectionHead title="Achievements" />
-              <ol className="cv-rules">
-                {cv.achievements.map((item) => (
-                  <li key={item.id} className="cv-rule">
-                    <div className="cv-rule-meta">
-                      <time
-                        className="cv-rule-period"
-                        dateTime={item.date ?? undefined}
-                      >
-                        {formatDateOnly(item.date)}
-                      </time>
-                      <span className="cv-rule-note">{item.category}</span>
-                    </div>
-                    <div className="cv-rule-main">
-                      <h3 className="cv-row-title">
-                        {item.url ? (
-                          <a
-                            href={item.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="link"
-                          >
-                            {item.title}
-                          </a>
-                        ) : (
-                          item.title
-                        )}
-                      </h3>
-                      <p className="cv-row-desc">{item.description}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
-            </section>
-          </div>
+    <div className="cv">
+      <div className="cv-toolbar">
+        <div className="container-page cv-toolbar__inner">
+          <CvIndex />
+          <PrintButton />
         </div>
       </div>
-      </div>
+
+      <article className="cv-sheet">
+        <header className="cv-header">
+          <h1 className="cv-name">{profile.name}</h1>
+          <p className="cv-title">{cv.title ?? profile.headline}</p>
+          <ul className="cv-contact">
+            <li>
+              <PinIcon className="cv-icon" />
+              {profile.location}
+            </li>
+            <li>
+              <MailIcon className="cv-icon" />
+              <a href={`mailto:${cv.contact.email}`}>{cv.contact.email}</a>
+            </li>
+            <li>
+              <LinkedInIcon className="cv-icon" />
+              <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer me">
+                {displayUrl(profile.links.linkedin)}
+              </a>
+            </li>
+            <li>
+              <GitHubIcon className="cv-icon" />
+              <a href={profile.links.github} target="_blank" rel="noopener noreferrer me">
+                {displayUrl(profile.links.github)}
+              </a>
+            </li>
+          </ul>
+        </header>
+
+        <div className="cv-body">
+          <section id="summary" className="cv-section" aria-labelledby="cv-summary">
+            <h2 id="cv-summary" className="cv-heading">
+              Profile
+            </h2>
+            <p className="cv-text">{cv.summary}</p>
+          </section>
+
+          <section id="experience" className="cv-section" aria-labelledby="cv-experience">
+            <h2 id="cv-experience" className="cv-heading">
+              Experience
+            </h2>
+            <ol className="cv-entries">
+              {cv.experience.map((job) => (
+                <li
+                  key={`${job.organization}-${job.role}-${job.period}`}
+                  className={job.current ? "cv-entry" : "cv-entry cv-entry--past"}
+                >
+                  <div className="cv-entry__head">
+                    <h3 className="cv-entry__title">
+                      {job.role}
+                      <span className="cv-entry__org">
+                        <span className="cv-sep">, </span>
+                        {job.organization}
+                      </span>
+                    </h3>
+                    <span className="cv-entry__date">{job.period}</span>
+                  </div>
+                  <ul className="cv-points">
+                    {job.points.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section id="skills" className="cv-section cv-section--skills" aria-labelledby="cv-skills">
+            <h2 id="cv-skills" className="cv-heading">
+              Skills
+            </h2>
+            <dl className="cv-skills">
+              {cv.skillGroups.map((group) => (
+                <div key={group.group} className="cv-skills__row">
+                  <dt>{group.group}</dt>
+                  <dd>
+                    <ul className="cv-skills__list">
+                      {group.items.map((item) => (
+                        <li key={item}>{item}</li>
+                      ))}
+                    </ul>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+
+          <section id="work" className="cv-section cv-section--projects" aria-labelledby="cv-work">
+            <h2 id="cv-work" className="cv-heading">
+              Projects
+            </h2>
+            <ol className="cv-entries">
+              {cv.featuredProjects.map((project) => (
+                <li key={project.id} className="cv-entry cv-project">
+                  <span className="cv-project__head">
+                    <a href={project.url} target="_blank" rel="noopener noreferrer" className="cv-project__name">
+                      {project.name}
+                    </a>
+                    <span className="cv-project__lang">
+                      <span
+                        className="lang-dot"
+                        style={{ backgroundColor: languageColor(project.language) }}
+                        aria-hidden
+                      />
+                      {project.language}
+                    </span>
+                  </span>
+                  <span className="cv-project__desc">{project.description}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+
+          <section id="education" className="cv-section" aria-labelledby="cv-education">
+            <h2 id="cv-education" className="cv-heading">
+              Education
+            </h2>
+            <div className="cv-entry">
+              <div className="cv-entry__head">
+                <h3 className="cv-entry__title">
+                  {education.domain}
+                  <span className="cv-entry__org">
+                    <span className="cv-sep">, </span>
+                    {education.school}
+                  </span>
+                </h3>
+                <span className="cv-entry__date">Present</span>
+              </div>
+              <ul className="cv-points">
+                {education.extracurriculars.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          {cv.interests.length > 0 ? (
+            <section className="cv-section" aria-labelledby="cv-interests">
+              <h2 id="cv-interests" className="cv-heading">
+                Interests
+              </h2>
+              <p className="cv-text">{cv.interests.join(", ")}.</p>
+            </section>
+          ) : null}
+
+          <section
+            id="achievements"
+            className="cv-section cv-section--compact"
+            aria-labelledby="cv-achievements"
+          >
+            <h2 id="cv-achievements" className="cv-heading">
+              Training & achievements
+            </h2>
+            <ol className="cv-entries">
+              {cv.achievements.map((item) => (
+                <li key={item.id} className="cv-entry">
+                  <div className="cv-entry__head">
+                    <h3 className="cv-entry__title cv-entry__title--plain">
+                      {item.url ? (
+                        <a href={item.url} target="_blank" rel="noopener noreferrer">
+                          {item.title}
+                        </a>
+                      ) : (
+                        item.title
+                      )}
+                    </h3>
+                    {item.date ? (
+                      <time className="cv-entry__date" dateTime={item.date}>
+                        {formatMonth(item.date)}
+                      </time>
+                    ) : null}
+                  </div>
+                  <p className="cv-entry__text">{item.description}</p>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </div>
+      </article>
     </div>
   );
 }

@@ -1,12 +1,9 @@
 import ReactMarkdown, { type Components } from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-/* Styling lives in the `.prose` rules of globals.css. Only behaviour that
-   plain CSS cannot express is handled here. */
 const components: Components = {
-  // The page title is the only h1, so demote headings inside the article.
-  h1: ({ children, ...props }) => <h2 {...props}>{children}</h2>,
-  a: ({ children, href = "", ...props }) => {
+  a: ({ node, children, href = "", ...props }) => {
+    void node;
     const external = /^https?:\/\//.test(href);
     return (
       <a
@@ -18,23 +15,28 @@ const components: Components = {
       </a>
     );
   },
+  h1: ({ node, children, ...props }) => {
+    void node;
+    return <h2 {...props}>{children}</h2>;
+  },
   img: ({ src, alt = "" }) => (
     // eslint-disable-next-line @next/next/no-img-element
-    <img src={src} alt={alt} loading="lazy" />
+    <img src={typeof src === "string" ? src : undefined} alt={alt} loading="lazy" decoding="async" />
   ),
-  table: ({ children, ...props }) => (
-    <div className="table-wrap">
-      <table {...props}>{children}</table>
-    </div>
-  ),
+  table: ({ node, children, ...props }) => {
+    void node;
+    return (
+      <div className="table-wrap">
+        <table {...props}>{children}</table>
+      </div>
+    );
+  },
 };
 
 export default function Markdown({ content }: { content: string }) {
   return (
-    <div className="prose">
-      <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
-        {content}
-      </ReactMarkdown>
-    </div>
+    <ReactMarkdown remarkPlugins={[remarkGfm]} components={components}>
+      {content}
+    </ReactMarkdown>
   );
 }

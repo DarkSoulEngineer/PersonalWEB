@@ -1,12 +1,36 @@
 import ArticlesView from "@/components/articles/ArticlesView";
-import { getPostList, getTags } from "@/lib/posts";
+import JsonLd from "@/components/ui/JsonLd";
+import PageHeader from "@/components/ui/PageHeader";
+import { getPostList, getTags, hasPosts } from "@/lib/posts";
+import { pageMetadata } from "@/lib/seo";
+import { SITE_NAME } from "@/lib/site";
+import { breadcrumbSchema, collectionPageSchema } from "@/lib/structured-data";
 
-export const metadata = {
-  title: "Articles",
-  description:
-    "Articles by Catalin-Marian Milchis on cybersecurity, RF security and software development.",
-};
+const TITLE = "Articles";
+const DESCRIPTION =
+  "Articles by Milchis Catalin-Marian on penetration testing, telecom, wireless security and hardware.";
+
+export const metadata = pageMetadata({
+  title: TITLE,
+  description: DESCRIPTION,
+  path: "/articles",
+  noindex: !hasPosts(),
+});
 
 export default function ArticlesPage() {
-  return <ArticlesView posts={getPostList()} tags={getTags()} />;
+  return (
+    <>
+      <JsonLd data={collectionPageSchema("/articles", `${TITLE} | ${SITE_NAME}`, DESCRIPTION)} />
+      <JsonLd
+        data={breadcrumbSchema([
+          { name: "Home", path: "/" },
+          { name: TITLE, path: "/articles" },
+        ])}
+      />
+      <PageHeader eyebrow="Writing" title="Articles">
+        Thoughts, experiences and discoveries from my journey in cybersecurity, telecom and hardware.
+      </PageHeader>
+      <ArticlesView posts={getPostList()} tags={getTags()} />
+    </>
+  );
 }
