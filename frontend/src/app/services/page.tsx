@@ -8,27 +8,23 @@ import { PERSON_ID, absoluteUrl } from "@/lib/site";
 import { breadcrumbSchema } from "@/lib/structured-data";
 
 const DESCRIPTION =
-  "Authorized, time-boxed security assessment for web applications and APIs: scoped manual review, reproducible findings, remediation guidance and optional retesting.";
+  "Authorized, time-boxed security assessment: scoped manual review, reproducible findings, remediation guidance and optional retesting.";
 
 const PROFILE = [
-  { term: "Focus", detail: "Web applications and APIs" },
-  { term: "Model", detail: "Time-boxed, manual assessment" },
+  { term: "Focus", detail: "Agreed systems and assets" },
+  { term: "Model", detail: "Time-boxed, manual review" },
   { term: "Deliverable", detail: "Prioritized findings and remediation guidance" },
   { term: "Prerequisite", detail: "Written authorization and agreed scope" },
 ];
 
 const COVERAGE = [
   {
-    title: "Web applications",
-    body: "Authentication, session management, account recovery, role boundaries, input handling, file uploads and business workflows. The review covers the application as an authenticated user, not only the public login page.",
+    title: "Applications",
+    body: "Authentication, session management, account recovery, role boundaries, input handling, file uploads and business workflows. The review covers the system as an authenticated user, not only the public entry point.",
   },
   {
-    title: "APIs",
-    body: "Object-level and function-level authorization, token handling, data exposure, input validation and abuse of documented workflows. Coverage is mapped to the API documentation and agreed endpoints.",
-  },
-  {
-    title: "Adjacent technical work",
-    body: "Sub-GHz radio, embedded systems and industrial protocols appear in my project work. These require a separate feasibility and safety review and are not covered by a standard web or API assessment.",
+    title: "Interfaces",
+    body: "Object-level and function-level authorization, token handling, data exposure, input validation and abuse of documented workflows. Coverage is mapped to the documentation and agreed endpoints.",
   },
 ];
 
@@ -45,7 +41,7 @@ const PHASES = [
   },
   {
     title: "Review",
-    detail: "Manual review supported by tooling. The OWASP Web Security Testing Guide and API Security guidance inform the checklist; scanner output is treated as a lead, not a finding.",
+    detail: "Manual review supported by tooling. Relevant security testing guidance informs the checklist; scanner output is treated as a lead, not a finding.",
     output: "Validated observations",
   },
   {
@@ -85,7 +81,7 @@ const DELIVERABLES = [
 ];
 
 export const metadata = pageMetadata({
-  title: "Web & API Security Assessment",
+  title: "Security Assessment",
   description: DESCRIPTION,
   path: "/services",
 });
@@ -105,16 +101,15 @@ export default function ServicesPage() {
         "@type": "Service",
         "@id": `${absoluteUrl("/services")}#service`,
         url: absoluteUrl("/services"),
-        name: "Web application and API security assessment",
+        name: "Security assessment",
         serviceType: "Security assessment",
         description: DESCRIPTION,
         provider: { "@id": PERSON_ID },
       }} />
 
-      <PageHeader eyebrow="Services" title="Web application and API security assessment">
-        A structured, time-boxed review of how an application handles authentication,
-        authorization, data and business logic. The result is a prioritized, reproducible
-        report your engineers can act on.
+      <PageHeader eyebrow="Services" title="Security assessment">
+        A structured, time-boxed review of how a system handles access, data and business
+        logic. The result is a prioritized, reproducible report your engineers can act on.
       </PageHeader>
 
       <div className="btn-row">
@@ -142,11 +137,11 @@ export default function ServicesPage() {
         <section aria-labelledby="assessment-coverage" className="services-section">
           <h2 id="assessment-coverage" className="section-title">Assessment coverage</h2>
           <p className="services-intro">
-            My professional assessment work focuses on web application and API security.
-            Telecom and embedded projects inform how I read systems, but they are not presented
-            as equivalent coverage.
+            The scope is agreed per engagement and limited to systems you own or are authorized
+            to test. The categories below describe typical coverage; they are not a claim about
+            every environment.
           </p>
-          <div className="services-grid">
+          <div className="services-grid services-grid--two">
             {COVERAGE.map((item) => (
               <article key={item.title} className="services-card">
                 <h3>{item.title}</h3>
@@ -211,7 +206,7 @@ export default function ServicesPage() {
                 <li>Denial-of-service testing and destructive changes.</li>
                 <li>Social engineering and physical access.</li>
                 <li>Access to unrelated customer data.</li>
-                <li>Live industrial processes and third-party devices.</li>
+                <li>Anything outside the agreed scope.</li>
               </ul>
             </div>
           </div>
@@ -225,9 +220,9 @@ export default function ServicesPage() {
           <div>
             <h2 id="assessment-contact">Start a scoping discussion</h2>
             <p>
-              Send the application type, environment, approximate size, user roles and preferred
-              dates. Do not include passwords, API keys, customer data or vulnerability evidence
-              in the first message.
+              Send a short description of the systems, the environment, approximate size, user
+              roles and preferred dates. Do not include passwords, API keys, customer data or
+              vulnerability evidence in the first message.
             </p>
             <p>
               Assessment work begins only after written authorization from the system owner.
@@ -235,9 +230,8 @@ export default function ServicesPage() {
               employers.
             </p>
             <p className="services-background">
-              For background, see my <Link href="/cv">CV</Link>,{" "}
-              <Link href="/projects">project work</Link> and{" "}
-              <Link href="/posts/sub-ghz-radio-cc1101-basics">CC1101 explainer</Link>.
+              For background, see my <Link href="/cv">CV</Link> and{" "}
+              <Link href="/projects">project work</Link>.
             </p>
           </div>
           <div className="services-contact__actions">

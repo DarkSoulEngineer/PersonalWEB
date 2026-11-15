@@ -1338,7 +1338,7 @@ body {
   }
 
   .article {
-    max-width: 46rem;
+    max-width: 68rem;
   }
   .services-page {
     display: grid;
@@ -1399,6 +1399,9 @@ body {
   @media (min-width: 768px) {
     .services-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+    .services-grid--two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
   .services-card {
@@ -1565,6 +1568,7 @@ body {
     font-size: 22px;
     font-weight: 600;
     letter-spacing: -0.02em;
+    color: var(--accent);
   }
   .services-contact p {
     max-width: 62ch;
@@ -1874,7 +1878,7 @@ body {
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-  :root[data-theme="light"] :is(.cv-heading, .eyebrow, .text-accent, .prose a) {
+  :root[data-theme="light"] :is(.cv-heading, .eyebrow, .text-accent, .prose a, .services-contact h2) {
     -webkit-text-stroke: 1px var(--accent-ink);
     paint-order: stroke fill;
     font-weight: 600;
