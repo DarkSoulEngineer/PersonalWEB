@@ -1878,7 +1878,7 @@ body {
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-  :root[data-theme="light"] :is(.cv-heading, .eyebrow, .text-accent) {
+  :root[data-theme="light"] :is(.cv-heading, .eyebrow, .text-accent, .services-contact h2) {
     -webkit-text-stroke: 1px var(--accent-ink);
     paint-order: stroke fill;
     font-weight: 600;
