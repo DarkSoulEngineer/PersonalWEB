@@ -29,7 +29,6 @@
 <linearGradient id="sw" x1="0" x2="1"><stop offset="0" stop-color="#cdf522" stop-opacity="0"/><stop offset="1" stop-color="#cdf522" stop-opacity=".18"/></linearGradient>
 <clipPath id="plot"><rect x="662" y="38" width="476" height="193"/></clipPath>
 </defs>
-<rect width="1200" height="298" fill="#0d1117"/>
 <text x="30" y="82" class="name" fill="#cdf522" filter="url(#tglow)">Milchis</text>
 <text x="30" y="146" class="name" fill="#cdf522" filter="url(#tglow)">Cătălin-Marian</text>
 <text x="31" y="188" class="mono tag">CYBERSECURITY | TELECOM<tspan class="cur" fill="#cdf522">_</tspan></text>

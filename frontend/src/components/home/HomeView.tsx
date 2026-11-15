@@ -19,7 +19,7 @@ export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] 
   const communityRoles = currentRoles.filter((job) => !profile.worksFor.includes(job.organization));
 
   return (
-    <div className="stack-xl">
+    <div className="home-page stack-xl">
       <div className="banner">
         <img
           src="/header-dark.svg"
