@@ -1,7 +1,7 @@
 import Link from "next/link";
 import JsonLd from "@/components/ui/JsonLd";
 import PageHeader from "@/components/ui/PageHeader";
-import { LinkedInIcon, MailIcon } from "@/components/ui/icons";
+import { LinkedInIcon, MailIcon, ArrowRightIcon } from "@/components/ui/icons";
 import { getCv } from "@/lib/cv";
 import { pageMetadata } from "@/lib/seo";
 import { PERSON_ID, absoluteUrl } from "@/lib/site";
@@ -9,24 +9,6 @@ import { breadcrumbSchema } from "@/lib/structured-data";
 
 const DESCRIPTION =
   "Authorized, time-boxed security assessment: scoped manual review, reproducible findings, remediation guidance and optional retesting.";
-
-const PROFILE = [
-  { term: "Focus", detail: "Agreed systems and assets" },
-  { term: "Model", detail: "Time-boxed, manual review" },
-  { term: "Deliverable", detail: "Prioritized findings and remediation guidance" },
-  { term: "Prerequisite", detail: "Written authorization and agreed scope" },
-];
-
-const COVERAGE = [
-  {
-    title: "Applications",
-    body: "Authentication, session management, account recovery, role boundaries, input handling, file uploads and business workflows. The review covers the system as an authenticated user, not only the public entry point.",
-  },
-  {
-    title: "Interfaces",
-    body: "Object-level and function-level authorization, token handling, data exposure, input validation and abuse of documented workflows. Coverage is mapped to the documentation and agreed endpoints.",
-  },
-];
 
 const PHASES = [
   {
@@ -122,35 +104,6 @@ export default function ServicesPage() {
       </div>
 
       <div className="services-page">
-        <section aria-labelledby="engagement-profile" className="services-section">
-          <h2 id="engagement-profile" className="section-title">Engagement profile</h2>
-          <dl className="services-facts">
-            {PROFILE.map((item) => (
-              <div key={item.term} className="services-fact">
-                <dt>{item.term}</dt>
-                <dd>{item.detail}</dd>
-              </div>
-            ))}
-          </dl>
-        </section>
-
-        <section aria-labelledby="assessment-coverage" className="services-section">
-          <h2 id="assessment-coverage" className="section-title">Assessment coverage</h2>
-          <p className="services-intro">
-            The scope is agreed per engagement and limited to systems you own or are authorized
-            to test. The categories below describe typical coverage; they are not a claim about
-            every environment.
-          </p>
-          <div className="services-grid services-grid--two">
-            {COVERAGE.map((item) => (
-              <article key={item.title} className="services-card">
-                <h3>{item.title}</h3>
-                <p>{item.body}</p>
-              </article>
-            ))}
-          </div>
-        </section>
-
         <section aria-labelledby="assessment-process" className="services-section">
           <h2 id="assessment-process" className="section-title">Assessment process</h2>
           <ol className="services-process">
@@ -230,10 +183,7 @@ export default function ServicesPage() {
               Timing and availability are confirmed once the scope is clear. This page describes
               my assessment approach and does not imply endorsement by my employers.
             </p>
-            <p className="services-background">
-              For background, see my <Link href="/cv">CV</Link> and{" "}
-              <Link href="/projects">project work</Link>.
-            </p>
+            <p className="services-background">For background, see my <Link href="/cv">CV <ArrowRightIcon /></Link> and <Link href="/projects">project work <ArrowRightIcon /></Link>.</p>
           </div>
           <div className="services-contact__actions">
             <a href={emailHref} className="btn btn-primary">
