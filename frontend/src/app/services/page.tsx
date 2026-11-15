@@ -237,7 +237,7 @@ export default function ServicesPage() {
             <p className="services-background">
               For background, see my <Link href="/cv">CV</Link>,{" "}
               <Link href="/projects">project work</Link> and{" "}
-              <Link href="/posts/cc1101-packet-mode-and-raw-capture">CC1101 research note</Link>.
+              <Link href="/posts/sub-ghz-radio-cc1101-basics">CC1101 explainer</Link>.
             </p>
           </div>
           <div className="services-contact__actions">

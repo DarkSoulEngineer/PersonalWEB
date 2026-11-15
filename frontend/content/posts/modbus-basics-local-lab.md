@@ -64,7 +64,7 @@ Exposed Modbus servers are common on the public internet. Those are other people
 
 ## A local simulator lab
 
-My [modbus client](https://github.com/DarkSoulEngineer/modbus/tree/2db3e66f30ab94ba396d30744bae6e0c43e1a212) includes an embedded Modbus TCP server with drifting sensor values. The commands below come from the project README at the pinned revision. They are documented examples, not a transcript of a run for this article.
+My [modbus client](https://github.com/DarkSoulEngineer/modbus/tree/2db3e66f30ab94ba396d30744bae6e0c43e1a212) includes an embedded Modbus TCP server with drifting sensor values. The [Modbus project page](/projects/modbus) covers the client itself: transports, command set and the safety notes around write operations. The commands below come from the project README at the pinned revision. They are documented examples, not a transcript of a run for this article.
 
 Install it with Python 3.10 or newer:
 
@@ -115,7 +115,7 @@ Change the unit ID and see how the responses differ. Read a range that does not 
 
 Once the data model is familiar, the interesting questions become system questions: who can reach the server, which registers are writable, what happens when a write is accepted, and whether the network path is protected.
 
-For the deeper radio piece in this set, read [CC1101 PHY notes](/posts/cc1101-packet-mode-and-raw-capture).
+For the radio piece in this set, read [Sub-GHz radio for beginners](/posts/sub-ghz-radio-cc1101-basics).
 
 ## Sources
 

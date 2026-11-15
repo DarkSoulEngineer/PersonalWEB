@@ -5,6 +5,18 @@
   "buildCommand": "npm run build",
   "outputDirectory": "frontend/out",
   "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/posts/cc1101-packet-mode-and-raw-capture",
+      "destination": "/posts/sub-ghz-radio-cc1101-basics",
+      "permanent": true
+    },
+    {
+      "source": "/posts/cc1101-packet-mode-and-raw-capture.html",
+      "destination": "/posts/sub-ghz-radio-cc1101-basics",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

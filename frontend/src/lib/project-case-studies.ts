@@ -6,16 +6,19 @@ export interface ProjectCaseStudy {
   description: string;
   reviewedAt: string;
   problem: string[];
-  architecture: { title: string; description: string }[];
-  architectureCaption: string;
+  problemTitle?: string;
+  uses?: string[];
+  architecture?: { title: string; description: string }[];
+  architectureCaption?: string;
   walkthrough?: {
     title: string;
     description: string;
     commands?: string[];
   }[];
-  implementation: string[];
-  securityTakeaways: string[];
-  limitations: string;
+  implementation?: string[];
+  securityTakeaways?: string[];
+  limitations?: string;
+  relatedPosts?: { title: string; slug: string }[];
   sources: { label: string; url: string }[];
   license?: string;
 }
@@ -26,34 +29,37 @@ export const PROJECT_CASE_STUDIES: ProjectCaseStudy[] = [
   {
     projectId: 1,
     slug: "cc1101-driver",
-    title: "CC1101_DRIVER: ESP32-S3 radio driver and RF research",
-    metaTitle: "CC1101 ESP32-S3 Radio Driver",
-    description: "An ESP-IDF C driver for CC1101 radios on ESP32-S3: handle-based SPI control, receive paths, architecture and RF security considerations.",
+    title: "CC1101_DRIVER: what a sub-GHz radio module can do",
+    metaTitle: "CC1101 Modules: What They Are and What They Do",
+    description: "A short guide to CC1101 sub-GHz transceivers: what the module is, what you can use it for, and where the ESP32-S3 driver fits in.",
     reviewedAt: "2026-11-15",
+    problemTitle: "What it is",
     problem: [
-      "Working with a sub-GHz radio involves more than choosing a frequency. Firmware must configure the transceiver, coordinate access to its registers and FIFOs, and distinguish received data from a valid packet. Those responsibilities become more important when two radios share a microcontroller and SPI bus.",
-      "CC1101_DRIVER separates the reusable chip driver from board initialization and the RFuzz application. Its handle-based API lets the application address individual CC1101 modules while controlling frequency, channel, data rate, transmit power and packet settings. The documented setup uses an ESP32-S3 and two CC1101 modules.",
+      "The CC1101 is a low-cost sub-GHz transceiver from Texas Instruments. It handles the radio part of a link: modulation and demodulation, a packet engine, a small FIFO and an SPI control interface. It is not a microcontroller, so it does not run your application or decide what a payload means.",
+      "CC1101_DRIVER is an ESP-IDF C driver for that chip on an ESP32-S3. It configures the radio, sends and receives frames, and can switch between framed packets and a raw demodulator capture.",
+    ],
+    uses: [
+      "Read simple 315, 433 or 868 MHz remotes, buttons, door and window contacts, weather stations and utility sensors.",
+      "Build a private low-power sensor link where Wi-Fi or Bluetooth range and power draw do not fit.",
+      "Inspect an unfamiliar sub-GHz signal on a bench you control and look at its timing and encoding.",
+      "Check, as part of an authorized assessment, whether a device uses a fixed code, a rolling code or only a CRC.",
     ],
     architecture: [
-      { title: "UART console", description: "Operator requests receive modes and coordinated modulation profiles." },
-      { title: "RFuzz application", description: "ESP32-S3 application coordinates radio state and reports received data." },
-      { title: "ESP-IDF C driver", description: "Handles, command strobes, register access and FIFO operations." },
-      { title: "CC1101 radios", description: "Shared SPI bus with separate chip-select and GDO0 connections." },
+      { title: "CC1101 module", description: "A sub-GHz radio front end with a modem, packet engine and antenna connection." },
+      { title: "Microcontroller over SPI", description: "Your board sets frequency, modulation and packet options, then reads or writes bytes." },
+      { title: "Your application", description: "Turns those bytes into a sensor reading, a remote command, a log entry or a test result." },
     ],
-    architectureCaption: "Simplified control path. Received data returns through the driver to the application; raw receive capture uses the ESP32-S3 RMT peripheral.",
-    implementation: [
-      "The driver wraps the CC1101 register interface in C. Each handle identifies its SPI device and control pins, keeping chip operations separate from the board-specific initialization component.",
-      "The hardware layer initializes the shared SPI bus and coordinates access with a mutex. Separate chip-select lines allow the application to address each radio without treating the pair as a single device.",
-      "The packet receive path reports the hardware CRC outcome. A separate raw path captures digital demodulator level/duration data through RMT; it is not an I/Q receiver or an automatic decoder for arbitrary wireless protocols.",
-      "The referenced lean RFuzz firmware configures Radio A but leaves it idle, while Radio B listens and reports received data. It does not automatically transmit or compare received packets against a golden payload.",
-    ],
+    architectureCaption: "The module moves bytes. The microcontroller and your firmware decide what they mean.",
     securityTakeaways: [
-      "A valid CRC detects transmission errors; it does not establish sender identity, authenticate a command or prevent replay. Protocol-level security needs separate analysis.",
-      "Explicit radio state and bounded capture/output paths matter when handling malformed or unexpected input. Report observed capture loss and gaps rather than assuming a continuous waveform.",
-      "RF work requires authorization and compliance with the applicable frequency, power and duty-cycle rules. A register setting is not evidence of compliant radiated power.",
+      "A valid CRC detects transmission errors. It does not prove who sent a frame or stop a replay; authentication belongs in the protocol.",
+      "Only transmit on hardware and frequencies you own or are authorized to test, within your region's power and duty-cycle limits.",
     ],
-    limitations: "This is a research driver and console, not a certified radio product. The README distinguishes historical hardware evidence from later source changes. The current lean firmware and candidate profiles are not presented here as hardware-validated, lossless, or compliant with a measured RF power target.",
+    limitations: "This is a research driver and console, not a certified radio product, and it is not an SDR or an arbitrary-protocol decoder. Performance and range are not claimed here; the README separates earlier hardware runs from later source changes.",
+    relatedPosts: [
+      { title: "Sub-GHz radio for beginners: what a CC1101 module does", slug: "sub-ghz-radio-cc1101-basics" },
+    ],
     sources: [
+      { label: "CC1101 datasheet: bands, modulation and packet handling", url: "https://www.ti.com/lit/ds/symlink/cc1101.pdf" },
       { label: "README and validation limits at reviewed commit", url: "https://github.com/DarkSoulEngineer/CC1101_DRIVER/blob/0656de50adbf87d35de05eed8db9b64a78473e82/README.md" },
       { label: "Reusable CC1101 driver component", url: "https://github.com/DarkSoulEngineer/CC1101_DRIVER/tree/0656de50adbf87d35de05eed8db9b64a78473e82/components/cc1101" },
     ],
@@ -89,6 +95,9 @@ export const PROJECT_CASE_STUDIES: ProjectCaseStudy[] = [
       "When TLS is used, verify the server certificate and protect client keys. An optional certificate-verification bypass is a diagnostic exception, not a secure deployment default.",
     ],
     limitations: "A protocol client is not a complete OT security assessment. Device-specific register maps, safety constraints, operational approvals and the surrounding network architecture still determine what can be tested safely. No production-device assessment or certification is claimed by this case study.",
+    relatedPosts: [
+      { title: "Modbus for beginners: read your first registers in a local lab", slug: "modbus-basics-local-lab" },
+    ],
     sources: [
       { label: "README: transports, commands, output and limits", url: "https://github.com/DarkSoulEngineer/modbus/blob/2db3e66f30ab94ba396d30744bae6e0c43e1a212/README.md" },
       { label: "Project source tree at reviewed commit", url: "https://github.com/DarkSoulEngineer/modbus/tree/2db3e66f30ab94ba396d30744bae6e0c43e1a212/src" },

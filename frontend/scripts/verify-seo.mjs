@@ -35,7 +35,6 @@ assert.equal(paths.size, urls.length, "Sitemap URLs must be unique");
 for (const path of [
   "/", "/cv", "/projects", "/projects/cc1101-driver", "/projects/modbus", "/projects/rtsp-to-http",
   "/services", "/articles",
-  "/posts/cc1101-packet-mode-and-raw-capture",
   "/posts/what-is-software-defined-radio",
   "/posts/sub-ghz-radio-cc1101-basics",
   "/posts/modbus-basics-local-lab",

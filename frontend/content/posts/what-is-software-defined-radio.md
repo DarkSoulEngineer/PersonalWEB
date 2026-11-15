@@ -56,7 +56,7 @@ Use the lowest gain that still shows the signal you want. If a strong FM transmi
 
 A CC1101 is not an SDR in this sense. It contains a hardware demodulator, a packet engine and a small FIFO. You configure it over SPI and read framed packets or the digital output of the demodulator. That is cheaper, lower power and a better fit for a battery-powered sensor, but you cannot replace the demodulation algorithm after the fact.
 
-This distinction matters when reading capture data. The CC1101 raw mode in my driver produces a digitized demodulator output, not I/Q samples. It can tell you about pulse timing. It cannot recover phase information the demodulator discarded. I cover that in the [CC1101 packet-mode article](/posts/cc1101-packet-mode-and-raw-capture).
+This distinction matters when reading capture data. The CC1101 raw mode in my driver produces a digitized demodulator output, not I/Q samples. It can tell you about pulse timing. It cannot recover phase information the demodulator discarded. I cover the module and its limits in the [sub-GHz radio explainer](/posts/sub-ghz-radio-cc1101-basics).
 
 ## A first setup
 

@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "CC1101_DRIVER",
-    "description": "ESP-IDF C driver for CC1101 sub-GHz radios, with an ESP32-S3 dual-radio console for authorized RF research.",
+    "description": "ESP-IDF C driver for CC1101 sub-GHz radio modules: set frequency, modulation and packet options, then send, receive or capture the demodulator output.",
     "language": "C",
     "category": "RF & Embedded",
     "url": "https://github.com/DarkSoulEngineer/CC1101_DRIVER",

@@ -14,6 +14,8 @@ export default function ProjectCaseStudyView({
   study: ProjectCaseStudy;
   related: Project[];
 }) {
+  const { architecture, architectureCaption, uses, implementation, securityTakeaways, limitations, relatedPosts, walkthrough } = study;
+
   return (
     <article className="project-study">
       <Link href="/projects" className="link-arrow link-arrow--back">
@@ -31,31 +33,40 @@ export default function ProjectCaseStudyView({
 
       <div className="project-study__sections">
         <section aria-labelledby="project-problem">
-          <h2 id="project-problem" className="section-title">The problem</h2>
+          <h2 id="project-problem" className="section-title">{study.problemTitle ?? "The problem"}</h2>
           <div className="prose">{study.problem.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}</div>
         </section>
 
-        <section aria-labelledby="project-architecture">
-          <h2 id="project-architecture" className="section-title">Architecture</h2>
-          <figure className="architecture" aria-labelledby="architecture-caption">
-            <ol className="architecture__steps">
-              {study.architecture.map((step) => (
-                <li key={step.title} className="architecture__step">
-                  <h3>{step.title}</h3>
-                  <p>{step.description}</p>
-                </li>
-              ))}
-            </ol>
-            <figcaption id="architecture-caption">{study.architectureCaption}</figcaption>
-          </figure>
-        </section>
+        {uses?.length ? (
+          <section aria-labelledby="project-uses">
+            <h2 id="project-uses" className="section-title">What you can use it for</h2>
+            <div className="prose"><ul>{uses.map((item) => <li key={item}>{item}</li>)}</ul></div>
+          </section>
+        ) : null}
 
-        {study.walkthrough?.length ? (
+        {architecture?.length ? (
+          <section aria-labelledby="project-architecture">
+            <h2 id="project-architecture" className="section-title">Architecture</h2>
+            <figure className="architecture" aria-labelledby="architecture-caption">
+              <ol className="architecture__steps">
+                {architecture.map((step) => (
+                  <li key={step.title} className="architecture__step">
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                  </li>
+                ))}
+              </ol>
+              <figcaption id="architecture-caption">{architectureCaption}</figcaption>
+            </figure>
+          </section>
+        ) : null}
+
+        {walkthrough?.length ? (
           <section aria-labelledby="project-walkthrough">
             <h2 id="project-walkthrough" className="section-title">Walkthrough</h2>
             <div className="prose">
               <ol>
-                {study.walkthrough.map((step) => (
+                {walkthrough.map((step) => (
                   <li key={step.title}>
                     <h3>{step.title}</h3>
                     <p>{step.description}</p>
@@ -69,20 +80,26 @@ export default function ProjectCaseStudyView({
           </section>
         ) : null}
 
-        <section aria-labelledby="project-implementation">
-          <h2 id="project-implementation" className="section-title">Implementation</h2>
-          <div className="prose"><ul>{study.implementation.map((item) => <li key={item}>{item}</li>)}</ul></div>
-        </section>
+        {implementation?.length ? (
+          <section aria-labelledby="project-implementation">
+            <h2 id="project-implementation" className="section-title">Implementation</h2>
+            <div className="prose"><ul>{implementation.map((item) => <li key={item}>{item}</li>)}</ul></div>
+          </section>
+        ) : null}
 
-        <section aria-labelledby="project-security">
-          <h2 id="project-security" className="section-title">Security takeaways</h2>
-          <div className="prose"><ul>{study.securityTakeaways.map((item) => <li key={item}>{item}</li>)}</ul></div>
-        </section>
+        {securityTakeaways?.length ? (
+          <section aria-labelledby="project-security">
+            <h2 id="project-security" className="section-title">Security takeaways</h2>
+            <div className="prose"><ul>{securityTakeaways.map((item) => <li key={item}>{item}</li>)}</ul></div>
+          </section>
+        ) : null}
 
-        <section aria-labelledby="project-limitations">
-          <h2 id="project-limitations" className="section-title">Scope and limitations</h2>
-          <p className="lead lead--flush">{study.limitations}</p>
-        </section>
+        {limitations ? (
+          <section aria-labelledby="project-limitations">
+            <h2 id="project-limitations" className="section-title">Scope and limitations</h2>
+            <p className="lead lead--flush">{limitations}</p>
+          </section>
+        ) : null}
 
         <section aria-labelledby="project-sources">
           <h2 id="project-sources" className="section-title">Source references</h2>
@@ -97,6 +114,19 @@ export default function ProjectCaseStudyView({
             ))}
           </ul>
         </section>
+
+        {relatedPosts?.length ? (
+          <section aria-labelledby="related-articles">
+            <h2 id="related-articles" className="section-title">Related articles</h2>
+            <ul className="project-study__sources">
+              {relatedPosts.map((post) => (
+                <li key={post.slug}>
+                  <Link href={`/posts/${post.slug}`}>{post.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
 
         <section aria-labelledby="related-projects">
           <h2 id="related-projects" className="section-title">Related projects</h2>

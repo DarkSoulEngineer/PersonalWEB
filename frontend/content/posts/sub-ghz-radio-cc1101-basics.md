@@ -62,7 +62,7 @@ The CC1101 can hand you two different things. In packet mode, the chip looks for
 
 Packet mode is convenient when the traffic matches your configuration. Raw mode is useful when you want to see the timing and encoding of an unfamiliar signal. Raw mode is not a lossless recording of the radio spectrum: the chip has already filtered and demodulated the signal.
 
-My [CC1101 PHY article](/posts/cc1101-packet-mode-and-raw-capture) walks through the register values and the limits of that capture path. The [project case study](/projects/cc1101-driver) covers the driver architecture.
+The [CC1101 project page](/projects/cc1101-driver) shows what the module is used for and how the ESP32-S3 driver fits in.
 
 ## Security relevance
 
