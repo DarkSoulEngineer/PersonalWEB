@@ -1338,7 +1338,7 @@ body {
   }
 
   .article {
-    max-width: 68rem;
+    max-width: 46rem;
   }
   .services-page {
     display: grid;
@@ -1568,7 +1568,6 @@ body {
     font-size: 22px;
     font-weight: 600;
     letter-spacing: -0.02em;
-    color: var(--accent);
   }
   .services-contact p {
     max-width: 62ch;
@@ -1625,13 +1624,14 @@ body {
     font-weight: 600;
   }
   .prose a {
-    color: var(--accent);
+    color: var(--muted);
     text-decoration: underline;
-    text-decoration-color: var(--accent-underline);
-    text-underline-offset: 3px;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 4px;
   }
   .prose a:hover {
-    text-decoration-color: var(--accent);
+    color: var(--fg);
+    text-decoration-color: var(--fg);
   }
   .prose ul,
   .prose ol {
@@ -1878,7 +1878,7 @@ body {
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-  :root[data-theme="light"] :is(.cv-heading, .eyebrow, .text-accent, .prose a, .services-contact h2) {
+  :root[data-theme="light"] :is(.cv-heading, .eyebrow, .text-accent) {
     -webkit-text-stroke: 1px var(--accent-ink);
     paint-order: stroke fill;
     font-weight: 600;
