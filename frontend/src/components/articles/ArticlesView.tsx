@@ -68,7 +68,7 @@ export default function ArticlesView({ posts, tags }: { posts: PostListItem[]; t
           <p className="text-sm text-muted">No articles match the selected tag.</p>
         </div>
       ) : (
-        <ul className="post-list">
+        <ul className="post-list" key={`${activeTag}:${currentPage}`}>
           {visiblePosts.map((post) => (
             <li key={post.id} className="post-row">
               <time dateTime={post.created_at ?? undefined} className="post-row__date">

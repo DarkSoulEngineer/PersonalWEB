@@ -1,7 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 export const CV_SECTIONS = [
   { id: "summary", label: "Profile" },
   { id: "experience", label: "Experience" },
@@ -11,25 +9,15 @@ export const CV_SECTIONS = [
   { id: "achievements", label: "Training" },
 ] as const;
 
-export function CvIndex() {
-  const [activeId, setActiveId] = useState<string>(CV_SECTIONS[0].id);
+export type CvSectionId = (typeof CV_SECTIONS)[number]["id"];
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) setActiveId(entry.target.id);
-        }
-      },
-      { rootMargin: "-20% 0px -60% 0px", threshold: 0 },
-    );
-
-    for (const section of CV_SECTIONS) {
-      const el = document.getElementById(section.id);
-      if (el) observer.observe(el);
-    }
-    return () => observer.disconnect();
-  }, []);
+export function CvIndex({
+  activeId,
+  onNavigate,
+}: {
+  activeId: CvSectionId;
+  onNavigate: (id: CvSectionId) => void;
+}) {
 
   return (
     <nav className="cv-index" aria-label="CV sections">
@@ -40,6 +28,11 @@ export function CvIndex() {
               href={`#${section.id}`}
               className="nav-link"
               aria-current={activeId === section.id ? "true" : undefined}
+              onClick={(event) => {
+                if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+                event.preventDefault();
+                onNavigate(section.id);
+              }}
             >
               {section.label}
             </a>

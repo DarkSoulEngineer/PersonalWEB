@@ -1,6 +1,5 @@
-import { CvIndex } from "@/components/cv/CvIndex";
-import PrintButton from "@/components/cv/PrintButton";
-import { GitHubIcon, LinkedInIcon, MailIcon, PinIcon } from "@/components/ui/icons";
+import CvToolbar from "@/components/cv/CvToolbar";
+import { ExternalIcon, GitHubIcon, LinkedInIcon, MailIcon, PinIcon } from "@/components/ui/icons";
 import { languageColor } from "@/lib/projects";
 import type { Cv } from "@/lib/types";
 
@@ -21,12 +20,7 @@ export default function CvView({ cv }: { cv: Cv }) {
 
   return (
     <div className="cv">
-      <div className="cv-toolbar">
-        <div className="container-page cv-toolbar__inner">
-          <CvIndex />
-          <PrintButton />
-        </div>
-      </div>
+      <CvToolbar />
 
       <article className="cv-sheet">
         <header className="cv-header">
@@ -124,6 +118,7 @@ export default function CvView({ cv }: { cv: Cv }) {
                   <span className="cv-project__head">
                     <a href={project.url} target="_blank" rel="noopener noreferrer" className="cv-project__name">
                       {project.name}
+                      <ExternalIcon className="inline-link-icon" />
                     </a>
                     <span className="cv-project__lang">
                       <span
@@ -188,6 +183,7 @@ export default function CvView({ cv }: { cv: Cv }) {
                       {item.url ? (
                         <a href={item.url} target="_blank" rel="noopener noreferrer">
                           {item.title}
+                          <ExternalIcon className="inline-link-icon" />
                         </a>
                       ) : (
                         item.title
@@ -206,6 +202,7 @@ export default function CvView({ cv }: { cv: Cv }) {
           </section>
         </div>
       </article>
+      <div className="cv-anchor-space" aria-hidden="true" />
     </div>
   );
 }

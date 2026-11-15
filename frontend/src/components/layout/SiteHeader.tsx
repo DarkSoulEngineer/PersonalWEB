@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "./nav";
 import ThemeToggle from "./ThemeToggle";
-import HeaderRadio from "@/components/radio/HeaderRadio";
+import RadioPlayer from "@/components/radio/RadioPlayer";
 
 function isCurrent(pathname: string, href: string): boolean {
   if (href === "/") return pathname === "/";
@@ -18,7 +18,7 @@ export default function SiteHeader() {
   return (
     <header className="site-header">
       <div className="container-page site-header__inner">
-        <HeaderRadio />
+        <RadioPlayer />
         <div className="site-header__end">
         <nav aria-label="Main">
           <ul className="nav">
@@ -30,6 +30,18 @@ export default function SiteHeader() {
                     href={href}
                     className="nav-link"
                     aria-current={current ? "page" : undefined}
+                    onNavigate={(event) => {
+                      if (pathname !== href) return;
+                      event.preventDefault();
+                      if (window.location.hash) {
+                        window.history.replaceState(
+                          window.history.state,
+                          "",
+                          `${window.location.pathname}${window.location.search}`,
+                        );
+                      }
+                      window.scrollTo({ top: 0, left: 0 });
+                    }}
                   >
                     {label}
                   </Link>

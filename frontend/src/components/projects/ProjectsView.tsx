@@ -43,7 +43,7 @@ export default function ProjectsView({
         ))}
       </div>
 
-      <ul className="card-grid">
+      <ul className="card-grid" key={activeLanguage}>
         {visible.map((project) => (
           <li key={project.id}>
             <ProjectCard project={project} />

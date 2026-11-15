@@ -3,7 +3,7 @@
 import { PauseIcon, PlayIcon, VolumeIcon, VolumeMuteIcon } from "@/components/ui/icons";
 import { RADIO_STATION, RADIO_TITLE, useRadio } from "./radio-context";
 
-export default function HeaderRadio() {
+export default function RadioPlayer() {
   const { status, isPlaying, muted, toggleMute, toggle, volume, setVolume } = useRadio();
 
   const percent = Math.round(volume * 100);

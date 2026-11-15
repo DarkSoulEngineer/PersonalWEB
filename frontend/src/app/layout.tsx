@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import SiteFooter from "@/components/layout/SiteFooter";
 import SiteHeader from "@/components/layout/SiteHeader";
 import RadioProvider from "@/components/radio/RadioProvider";
+import MobileRadio from "@/components/radio/MobileRadio";
 import JsonLd from "@/components/ui/JsonLd";
 import { getProfile } from "@/lib/profile";
 import { THEME_SCRIPT } from "@/lib/theme";
@@ -112,6 +113,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <main id="content" className="container-page flex-1 py-12 sm:py-16">
             {children}
           </main>
+          <MobileRadio />
           <SiteFooter />
         </RadioProvider>
       </body>

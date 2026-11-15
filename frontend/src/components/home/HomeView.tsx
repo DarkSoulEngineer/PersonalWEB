@@ -1,6 +1,6 @@
 import Link from "next/link";
 import ProjectCard from "@/components/projects/ProjectCard";
-import { ArrowRightIcon, GitHubIcon, LinkedInIcon, PinIcon } from "@/components/ui/icons";
+import { ArrowRightIcon, ExternalIcon, GitHubIcon, LinkedInIcon, PinIcon } from "@/components/ui/icons";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { formatDate } from "@/lib/format";
 import type { Cv, PostListItem } from "@/lib/types";
@@ -124,6 +124,7 @@ export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] 
                   {item.url ? (
                     <a href={item.url} target="_blank" rel="noopener noreferrer">
                       {item.title}
+                      <ExternalIcon className="inline-link-icon" />
                     </a>
                   ) : (
                     item.title

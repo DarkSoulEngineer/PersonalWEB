@@ -1,14 +1,14 @@
 {
   "photo": "/profile.jpg",
   "title": "Penetration Tester | Telecom",
-  "summary": "Penetration tester and 4th-year Telecommunications student at Transilvania University of Brasov. Hands-on experience in web and API penetration testing on client assessments at Arvato Systems Romania and in telecom R&D at Mitel Networks Romania on the OpenScape 4000 platform (tooling, system configuration and virtualisation), backed by CTF competitions representing UNITBV and the Google.org Cybersecurity Seminars run with Virtual Routes.",
+  "summary": "Penetration Tester and fourth-year Telecommunications student at Transilvania University of Brașov, specializing in offensive security, web and API penetration testing. Hands-on experience conducting client security assessments at Arvato Systems Romania and contributing to telecommunications R&D at Mitel Networks Romania, focusing on the OpenScape 4000 platform, system configuration, tooling, and virtualization. Active member of the Google.org Cybersecurity Seminars initiative, delivered in collaboration with Virtual Routes, and the CyberBrașov and InvataCyber.ro cybersecurity communities.",
   "contact": {
     "email": "milchiscatalin@gmail.com"
   },
   "experience": [
     {
       "organization": "Arvato Systems Romania",
-      "role": "Junior Penetration Tester (part-time)",
+      "role": "Junior Penetration Tester",
       "period": "Present",
       "current": true,
       "points": [
@@ -19,7 +19,7 @@
     },
     {
       "organization": "Mitel Networks Romania",
-      "role": "Junior Software Engineer (part-time), Telecom R&D",
+      "role": "Junior Software Engineer, Telecom R&D",
       "period": "Present",
       "current": true,
       "points": [
