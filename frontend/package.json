@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build && node scripts/secure-export.mjs",
+    "build": "next build && node scripts/secure-export.mjs && node scripts/verify-seo.mjs",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --test scripts/*.test.mjs"
+    "test": "node --test scripts/*.test.mjs",
+    "verify:seo": "node scripts/verify-seo.mjs"
   },
   "dependencies": {
     "next": "^16.4.5",

@@ -25,12 +25,13 @@ HTML. There is no backend or database.
 - Generated `sitemap.xml`, `robots.txt` and `manifest.webmanifest`
 - Favicons and app icons in `src/app/` and `public/`
 
-Absolute URLs come from `NEXT_PUBLIC_SITE_URL`. On Vercel this falls back to the
-production domain automatically (`VERCEL_PROJECT_PRODUCTION_URL`). Set it in the
-Vercel project settings if you use a custom domain:
+Canonical URLs default to `https://milchiscatalin.com`, including local production
+builds and preview deployments. `NEXT_PUBLIC_SITE_URL` can explicitly override
+that origin; it must not include credentials, a path, query string or fragment.
+The release SEO check requires HTTPS and rejects Vercel preview aliases.
 
 ```
-NEXT_PUBLIC_SITE_URL=https://your-domain.com
+NEXT_PUBLIC_SITE_URL=https://milchiscatalin.com
 ```
 
 ## Tech stack
@@ -52,6 +53,7 @@ PersonalWEB/
     │   │   ├── page.tsx       # Home: profile hero
     │   │   ├── articles/page.tsx  # Articles archive
     │   │   ├── projects/page.tsx  # Projects + language filter
+    │   │   ├── projects/[slug]/  # Source-backed project case studies
     │   │   ├── cv/page.tsx    # CV page
     │   │   ├── posts/[slug]/  # Post detail (static via generateStaticParams)
     │   │   └── not-found.tsx  # 404 page
@@ -137,6 +139,30 @@ frontend directory directly.
 ## Authoring content
 
 Content lives in `frontend/` and is read at build time.
+
+### Project case studies and indexing
+
+The indexable project pages `/projects/cc1101-driver`, `/projects/modbus` and
+`/projects/rtsp-to-http` are generated from `src/lib/project-case-studies.ts`.
+Each contains a problem statement, responsive architecture diagram, implementation
+notes, security takeaways, limitations and commit-pinned source references.
+Update the review date only when the editorial content is actually reviewed.
+`src/lib/project-routes.ts` maps project cards to their internal detail pages.
+
+The build checks the exported `robots.txt`, `sitemap.xml`, canonical URLs, page
+titles/H1s, and structured data. Re-run those checks with `npm run verify:seo`.
+The empty articles archive, empty-post placeholder and 404 page intentionally
+remain `noindex`; they are not included in the sitemap. This does not prevent
+the substantive pages from being indexed.
+
+After deployment, submit `https://milchiscatalin.com/sitemap.xml` in Google Search
+Console and inspect the homepage and project URLs with the live URL test.
+Confirm that Cloudflare permits verified search crawlers and does not challenge
+their HTML, CSS, JavaScript, robots or sitemap requests. A normal browser returning
+200 is not proof that a verified Googlebot request is allowed. Do not disable the
+site's CSP or all bot protections to solve a crawler-specific access problem.
+Indexability and structured data help discovery; neither guarantees indexing,
+Knowledge Graph inclusion, rich results or rankings.
 
 **Posts** are Markdown files in `frontend/content/posts/`. The file name is the
 URL slug, and the frontmatter drives the archive:

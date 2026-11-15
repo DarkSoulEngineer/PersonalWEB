@@ -59,6 +59,15 @@ export interface LanguageCount {
   count: number;
 }
 
+export interface ProjectCaseStudy {
+  slug: string;
+  title: string;
+  description: string;
+  reviewedAt: string;
+  sources: { url: string }[];
+  license?: string;
+}
+
 export interface Milestone {
   id: number;
   title: string;

@@ -1,9 +1,11 @@
 import Link from "next/link";
 import ProjectCard from "@/components/projects/ProjectCard";
+import FocusRibbons from "@/components/home/FocusRibbons";
 import { ArrowRightIcon, ExternalIcon, GitHubIcon, LinkedInIcon, PinIcon } from "@/components/ui/icons";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { formatDate } from "@/lib/format";
 import type { Cv, PostListItem } from "@/lib/types";
+import { HOME_HEADING, SITE_NAME } from "@/lib/site";
 
 export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] }) {
   const { profile } = cv;
@@ -22,7 +24,7 @@ export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] 
         <img src="/header-light.svg" alt="" aria-hidden width={1200} height={298} className="banner__img banner__img--light" />
       </div>
 
-      <section aria-labelledby="hero-title" className="hero fade-in">
+      <section aria-labelledby="hero-title" className="hero">
         <div className="hero__main">
           <div className="hero__person">
             <img
@@ -33,11 +35,8 @@ export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] 
               className="hero__photo"
             />
             <div className="min-w-0">
-              <h1 id="hero-title" className="sr-only">
-                {profile.name}, {profile.jobTitle}
-              </h1>
-              <p className="eyebrow">{profile.jobTitle}</p>
-              <p className="hero__headline hero__headline--side">{profile.headline}</p>
+              <p className="eyebrow">{SITE_NAME}</p>
+              <h1 id="hero-title" className="hero__headline hero__headline--side">{HOME_HEADING}</h1>
             </div>
           </div>
           <p className="hero__bio">{profile.bio}</p>
@@ -80,8 +79,7 @@ export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] 
           {currentRoles.length > 0 ? (
             <div className="hero__work">
               <h2 className="hero__work-title">
-                <span className="status-dot status-dot--current" aria-hidden />
-                Currently
+                  Currently
               </h2>
               <ul className="role-list">
                 {currentRoles.map((job) => (
@@ -97,14 +95,7 @@ export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] 
       </section>
 
       <section aria-labelledby="focus-title">
-        <SectionHeader id="focus-title" title="Focus areas & interests" />
-        <ul className="tag-list">
-          {[...new Set([...profile.skills, ...cv.interests])].map((skill) => (
-            <li key={skill} className="tag">
-              {skill}
-            </li>
-          ))}
-        </ul>
+        <FocusRibbons skills={profile.skills} interests={cv.interests} />
       </section>
 
       <section aria-labelledby="highlights-title">
@@ -113,7 +104,7 @@ export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] 
           title="Talks, training and competitions"
           action={{ href: "/cv#achievements", label: "Full CV" }}
         />
-        <ul className="post-list">
+        <ul className="post-list post-list--highlights">
           {cv.achievements.slice(0, 5).map((item) => (
             <li key={item.id} className="post-row">
               <time dateTime={item.date ?? undefined} className="post-row__date">

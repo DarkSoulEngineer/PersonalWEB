@@ -1,26 +1,24 @@
-import { getProfile } from "./profile";
-
 function resolveSiteUrl(): string {
   const explicit = process.env.NEXT_PUBLIC_SITE_URL;
-  if (explicit) return explicit.replace(/\/+$/, "");
-
-  const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
-  if (vercel) return `https://${vercel.replace(/\/+$/, "")}`;
-
-  return "http://localhost:3000";
+  const url = new URL(explicit || "https://milchiscatalin.com");
+  if (!["https:", "http:"].includes(url.protocol) || url.username || url.password
+    || url.pathname !== "/" || url.search || url.hash) {
+    throw new Error("NEXT_PUBLIC_SITE_URL must be an HTTP(S) origin without credentials, path, query or fragment.");
+  }
+  return url.origin;
 }
 
 export const SITE_URL = resolveSiteUrl();
 
-const profile = getProfile();
-
-export const SITE_NAME = profile.name;
-export const SITE_TITLE = `${profile.name} | Penetration Tester, Cybersecurity & Telecom`;
+export const SITE_NAME = "Milchiș Cătălin-Marian";
+export const SITE_TITLE = `${SITE_NAME} | Penetration Tester in Brașov, Romania`;
+export const HOME_HEADING = "Penetration Tester & Security Engineer in Brașov, Romania";
 export const SITE_DESCRIPTION =
-  "Milchis Catalin-Marian (DarkSoulEngineer) is a penetration tester working across cybersecurity and telecom, from Brasov, Romania: web and API pentesting at Arvato Systems, telecom R&D at Mitel Networks, CTF player for UNITBV. Projects and CV.";
+  "Milchiș Cătălin-Marian, Penetration Tester & Security Engineer in Brașov, Romania. Web and API security assessments, telecom R&D and open-source security projects.";
 
 export const SITE_KEYWORDS = [
   "Milchis Catalin-Marian",
+  SITE_NAME,
   "Catalin Milchis",
   "Milchis Catalin",
   "Cătălin-Marian Milchis",
@@ -51,7 +49,7 @@ export const OG_IMAGE = {
   url: "/og.jpg",
   width: 1200,
   height: 630,
-  alt: `${profile.name}, penetration tester, cybersecurity and telecom`,
+  alt: `${SITE_NAME}, penetration tester in Brașov, Romania`,
 };
 
 export const PERSON_ID = `${SITE_URL}/#person`;

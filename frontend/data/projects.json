@@ -2,17 +2,17 @@
   {
     "id": 1,
     "name": "CC1101_DRIVER",
-    "description": "C driver for the CC1101 sub-GHz radio transceiver, used in embedded wireless systems and radio-frequency research.",
+    "description": "ESP-IDF C driver for CC1101 sub-GHz radios, with an ESP32-S3 dual-radio console for authorized RF research.",
     "language": "C",
     "category": "RF & Embedded",
     "url": "https://github.com/DarkSoulEngineer/CC1101_DRIVER",
     "featured": true,
-    "github_updated_at": "2026-07-11"
+    "github_updated_at": "2026-11-02"
   },
   {
     "id": 8,
     "name": "RTSP_TO_HTTP",
-    "description": "Converts RTSP streams (IP cameras) into HTTP streams for direct viewing in the browser.",
+    "description": "RTSP-to-HLS streaming with FFmpeg and a Python HTTP server, for viewing authorized camera streams in browsers and smart TVs.",
     "language": "Python",
     "category": "Networks",
     "url": "https://github.com/DarkSoulEngineer/RTSP_TO_HTTP",
@@ -22,12 +22,12 @@
   {
     "id": 2,
     "name": "modbus",
-    "description": "Analysis of the Modbus protocol in industrial (OT/SCADA) systems, useful for testing the security of connected equipment.",
+    "description": "Python Modbus CLI for reading, watching and testing industrial devices over network and serial transports, with a built-in simulator.",
     "language": "Python",
     "category": "Security",
     "url": "https://github.com/DarkSoulEngineer/modbus",
     "featured": true,
-    "github_updated_at": "2026-08-13"
+    "github_updated_at": "2026-10-09"
   },
   {
     "id": 5,

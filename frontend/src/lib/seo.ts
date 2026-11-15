@@ -37,8 +37,8 @@ function openGraphFor(input: PageMetadataInput, fullTitle: string): Metadata["op
     return {
       ...base,
       type: "profile",
-      firstName: "Catalin-Marian",
-      lastName: "Milchis",
+      firstName: "Cătălin-Marian",
+      lastName: "Milchiș",
       username: "DarkSoulEngineer",
     };
   }

@@ -1,6 +1,7 @@
 import { getCv } from "./cv";
 import { PERSON_ID, SITE_DESCRIPTION, SITE_NAME, SITE_URL, WEBSITE_ID, absoluteUrl } from "./site";
-import type { PostDetail, Project } from "./types";
+import type { PostDetail, Project, ProjectCaseStudy } from "./types";
+import { projectDetailPath } from "./project-routes";
 
 type Schema = Record<string, unknown>;
 
@@ -14,32 +15,31 @@ export function personSchema(): Schema {
   return {
     "@type": "Person",
     "@id": PERSON_ID,
-    name: profile.name,
-    alternateName: [...profile.aliases, "Catalin Milchis", "Milchis Catalin", "Cătălin-Marian Milchis"],
-    givenName: "Catalin-Marian",
-    familyName: "Milchis",
+    name: SITE_NAME,
+    alternateName: [...new Set([profile.name, ...profile.aliases, "Catalin Milchis", "Milchis Catalin", "Cătălin-Marian Milchis"])],
+    givenName: "Cătălin-Marian",
+    familyName: "Milchiș",
     url: SITE_URL,
     image: absoluteUrl(cv.photo ?? profile.photo),
-    jobTitle: profile.jobTitle,
+    jobTitle: [profile.jobTitle, "Security Engineer"],
     description: profile.bio,
     hasOccupation: {
       "@type": "Occupation",
       name: profile.jobTitle,
       occupationalCategory: "15-1212.00",
-      occupationLocation: { "@type": "City", name: "Brasov, Romania" },
+      occupationLocation: { "@type": "City", name: "Brașov", containedInPlace: { "@type": "Country", name: "Romania" } },
       skills: skills.join(", "),
     },
     nationality: { "@type": "Country", name: "Romania" },
-    award: cv.achievements.map((item) => item.title),
     email: `mailto:${cv.contact.email}`,
     address: {
       "@type": "PostalAddress",
-      addressLocality: profile.location.split(",")[0]?.trim(),
+      addressLocality: "Brașov",
       addressCountry: "RO",
     },
     worksFor: profile.worksFor.map((name) => ({ "@type": "Organization", name })),
     memberOf: profile.memberOf.map((name) => ({ "@type": "Organization", name })),
-    alumniOf: { "@type": "CollegeOrUniversity", name: profile.education.school },
+    affiliation: { "@type": "CollegeOrUniversity", name: profile.education.school },
     knowsAbout: [...new Set([...profile.skills, ...skills])],
     knowsLanguage: ["ro", "en"],
     sameAs: [profile.links.linkedin, profile.links.github],
@@ -130,12 +130,13 @@ export function projectListSchema(projects: Project[]): Schema {
   return {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "Open-source projects by Milchis Catalin-Marian",
+    name: `Open-source projects by ${SITE_NAME}`,
     itemListElement: projects.map((project, index) => ({
       "@type": "ListItem",
       position: index + 1,
       item: {
         "@type": "SoftwareSourceCode",
+        url: projectDetailPath(project.id) ? absoluteUrl(projectDetailPath(project.id)!) : project.url,
         name: project.name,
         description: project.description,
         codeRepository: project.url,
@@ -144,5 +145,39 @@ export function projectListSchema(projects: Project[]): Schema {
         author: { "@id": PERSON_ID },
       },
     })),
+  };
+}
+
+export function projectCaseStudySchema(project: Project, study: ProjectCaseStudy): Schema {
+  const url = absoluteUrl(`/projects/${study.slug}`);
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "TechArticle",
+        "@id": `${url}#article`,
+        url,
+        headline: study.title,
+        description: study.description,
+        mainEntityOfPage: url,
+        dateModified: study.reviewedAt,
+        author: { "@id": PERSON_ID },
+        isPartOf: { "@id": WEBSITE_ID },
+        about: { "@id": `${url}#code` },
+        citation: study.sources.map((source) => source.url),
+        inLanguage: "en",
+      },
+      {
+        "@type": "SoftwareSourceCode",
+        "@id": `${url}#code`,
+        url,
+        name: project.name,
+        description: study.description,
+        codeRepository: project.url,
+        programmingLanguage: project.language,
+        author: { "@id": PERSON_ID },
+        license: study.license,
+      },
+    ],
   };
 }
