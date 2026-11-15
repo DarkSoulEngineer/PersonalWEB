@@ -50,6 +50,25 @@ export default function ProjectCaseStudyView({
           </figure>
         </section>
 
+        {study.walkthrough?.length ? (
+          <section aria-labelledby="project-walkthrough">
+            <h2 id="project-walkthrough" className="section-title">Walkthrough</h2>
+            <div className="prose">
+              <ol>
+                {study.walkthrough.map((step) => (
+                  <li key={step.title}>
+                    <h3>{step.title}</h3>
+                    <p>{step.description}</p>
+                    {step.commands?.length ? (
+                      <pre><code>{step.commands.join("\n")}</code></pre>
+                    ) : null}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </section>
+        ) : null}
+
         <section aria-labelledby="project-implementation">
           <h2 id="project-implementation" className="section-title">Implementation</h2>
           <div className="prose"><ul>{study.implementation.map((item) => <li key={item}>{item}</li>)}</ul></div>

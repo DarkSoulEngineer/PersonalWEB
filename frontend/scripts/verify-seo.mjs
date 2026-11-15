@@ -76,6 +76,9 @@ for (const url of urls) {
     const service = schemas(html).find((schema) => schema["@type"] === "Service");
     assert.ok(service, `${file}: missing service markup`);
     assert.equal(service.url, url.href, `${file}: wrong service URL`);
+    assert.ok(service.serviceType === "Security assessment", `${file}: wrong service type`);
+    assert.ok(html.includes("Security Assessment"), `${file}: missing assessment heading`);
+    assert.doesNotMatch(html, /penetration testing services/i, `${file}: stale service wording`);
     const cv = JSON.parse(await readFile(resolve("data/cv.json"), "utf8"));
     assert.ok(html.includes(`mailto:${cv.contact.email}?subject=`), `${file}: missing email contact`);
     const profile = JSON.parse(await readFile(resolve("data/profile.json"), "utf8"));

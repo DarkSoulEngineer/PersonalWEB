@@ -8,6 +8,11 @@ export interface ProjectCaseStudy {
   problem: string[];
   architecture: { title: string; description: string }[];
   architectureCaption: string;
+  walkthrough?: {
+    title: string;
+    description: string;
+    commands?: string[];
+  }[];
   implementation: string[];
   securityTakeaways: string[];
   limitations: string;
@@ -93,36 +98,73 @@ export const PROJECT_CASE_STUDIES: ProjectCaseStudy[] = [
   {
     projectId: 8,
     slug: "rtsp-to-http",
-    title: "RTSP_TO_HTTP: camera streams from RTSP to browser HLS",
-    metaTitle: "RTSP to HTTP: HLS Camera Streaming",
-    description: "An authorized camera-streaming pipeline using FFmpeg, HLS and a Python HTTP server, with architecture and practical camera-security considerations.",
+    title: "RTSP_TO_HTTP: a lab camera stream on a smart TV",
+    metaTitle: "RTSP to HTTP: HiveHack Camera Streaming Lab",
+    description: "HiveHack @ CyberSea walkthrough: authorized LAN reconnaissance, RTSP credential audit, FFmpeg HLS conversion and browser playback on a Samsung smart TV.",
     reviewedAt: "2026-11-15",
     problem: [
-      "An IP camera may publish video over RTSP while the intended viewing device expects browser-friendly HTTP delivery. Bridging those interfaces requires both a media-processing step and a way to serve the resulting stream.",
-      "RTSP_TO_HTTP was inspired by the HiveHack challenge at CyberSea. This case study focuses on the authorized streaming workflow: FFmpeg reads an RTSP source, produces HLS output, and a Python HTTP server makes that output available to a browser player or compatible smart TV.",
+      "The HiveHack room at CyberSea included a router, an IP camera and an older Samsung smart TV. The task was to get the camera feed onto the TV, which had a browser but no native RTSP support.",
+      "The camera exposed RTSP on its default port and accepted default credentials. That made the challenge a lesson in discovery and configuration, not a sophisticated exploit. The remaining problem was compatibility: RTSP is not something the TV browser can play, so the stream needed conversion and an HTTP delivery path.",
+      "RTSP_TO_HTTP packages that path: a credential-audit script for the authorized lab camera, an FFmpeg pipeline that turns RTSP into HLS, and a Python server that makes the playlist and segments available to a browser.",
     ],
     architecture: [
-      { title: "Authorized RTSP camera", description: "An approved camera source and its connection configuration." },
-      { title: "FFmpeg bridge", description: "Read the RTSP stream and produce browser-oriented HLS output." },
-      { title: "HLS files and HTTP server", description: "Serve the .m3u8 playlist and .ts media segments using Python." },
-      { title: "Browser or smart TV", description: "Load the playlist through the included browser player." },
+      { title: "Challenge LAN", description: "A wired Ethernet connection to the HiveHack router, with the camera and smart TV on the same local network." },
+      { title: "RTSP discovery and access", description: "Scan for TCP port 554, then test default credentials against the lab camera." },
+      { title: "FFmpeg HLS bridge", description: "Read the authenticated RTSP stream and transcode it into a playlist and short .ts segments." },
+      { title: "Python HTTP server", description: "Serve the player, playlist and segments on port 8000 with HLS MIME types." },
+      { title: "Samsung TV browser", description: "Open the server URL on the TV and play the HLS stream without native RTSP support." },
     ],
-    architectureCaption: "Media flows from an approved RTSP source through FFmpeg into HLS files, then over HTTP to the viewing device. This is a compatibility bridge, not an added authentication layer.",
+    architectureCaption: "The camera stream never reaches the TV directly. FFmpeg turns RTSP into HLS files, and the TV browser fetches them over HTTP. The bridge adds compatibility, not authentication.",
+    walkthrough: [
+      {
+        title: "Find the camera on the LAN",
+        description: "The challenge provided physical access to the router, camera and TV, so I used a wired connection instead of attacking Wi-Fi. A scan limited to the standard RTSP port was enough to locate the camera.",
+        commands: ["nmap -p 554 192.168.1.0/24"],
+      },
+      {
+        title: "Audit the RTSP credentials",
+        description: "The camera accepted default credentials. rtsp_crack.py drives ffmpeg with a short read timeout and classifies the result from the error output. It is a lab helper for an authorized device, not a general-purpose attack tool.",
+        commands: ["python3 crack/rtsp_crack.py --target CAMERA_IP --userlist crack/users.txt --passlist crack/passwords.txt --path stream1"],
+      },
+      {
+        title: "Verify the stream",
+        description: "Before changing formats, I opened the RTSP URL in VLC and ffplay to confirm that the credentials worked and the live feed was playable.",
+        commands: ['ffplay "rtsp://USER:PASSWORD@CAMERA_IP:554/stream1"'],
+      },
+      {
+        title: "Convert RTSP to HLS",
+        description: "live_stream.sh loads the camera settings from .env, removes old segments, and runs FFmpeg with 1920x1080 output, H.264 at 25 fps, a 1 Mbps target, CRF 31, AAC audio and five-second HLS segments.",
+        commands: ["bash live_stream.sh"],
+      },
+      {
+        title: "Serve the playlist over HTTP",
+        description: "server.py serves the project directory on port 8000, registers the HLS MIME types and prints the LAN address to open on another device.",
+        commands: ["python server.py", "http://LOCAL_IP:8000"],
+      },
+      {
+        title: "Play it on the TV",
+        description: "The Samsung TV browser loaded the player page and played the HLS stream. Pause and play worked; the goal was live display rather than a full media interface.",
+      },
+    ],
     implementation: [
-      "The repository includes Linux/macOS shell and Windows batch launchers for the FFmpeg streaming step, alongside an HTML player and Python HTTP server.",
-      "Stream connection and output settings are provided through environment configuration. HLS output consists of a playlist and media segments rather than a direct RTSP connection from the browser.",
-      "The separation between media conversion and HTTP serving makes the pipeline easier to inspect: source access, generated files, web delivery and browser playback can be evaluated as distinct boundaries.",
-      "The repository also documents credential-audit tooling for authorized lab exercises. That tooling is not a prerequisite for re-streaming a camera whose owner has supplied legitimate access.",
+      "rtsp_crack.py runs ffmpeg with -rtsp_transport tcp, a three-second read and a ten-second process timeout, then classifies the result from ffmpeg stderr. The repository includes small lab username and password lists for the challenge.",
+      "live_stream.sh and live_stream.bat wrap the same FFmpeg invocation. The shell version deletes old .ts files before starting and sources the camera settings from .env.",
+      "server.py subclasses SimpleHTTPRequestHandler to add application/x-mpegURL and video/MP2T MIME types, plus a permissive Access-Control-Allow-Origin header.",
+      "index.html is a minimal browser player for the generated playlist. The TV never connects to the RTSP source; it only requests HLS files from the Python server.",
     ],
     securityTakeaways: [
-      "Do not test or re-stream cameras without explicit authorization. Camera footage can expose sensitive personal or operational information.",
-      "Protect both sides of the bridge. Securing the original RTSP endpoint does not automatically secure the HLS playlist and segments served over HTTP.",
-      "Keep camera credentials out of version control, browser-delivered files and logs. For real deployments, add appropriate authentication, HTTPS and network restrictions around the streaming service.",
+      "Default credentials and an exposed RTSP port were enough to reach the camera feed. Change defaults, disable unused services and keep surveillance devices on a restricted network segment.",
+      "The bridge inherits the source's weaknesses. FFmpeg reads a plaintext RTSP stream, and the demo HTTP server serves the result without authentication or TLS.",
+      "The server allows any origin and prints its LAN address for convenience. That is acceptable on an isolated challenge network, not on a shared or public one.",
+      "The sample .env contains challenge credentials, and live_stream.sh writes the RTSP URL to the terminal. For real use, keep secrets in an untracked file and avoid writing them to logs.",
     ],
-    limitations: "The documented HTTP demo is not presented as a hardened production video service. Browser and smart-TV compatibility still depends on the media codecs and player support. This portfolio page does not host a camera feed, expose camera credentials, or claim that conversion alone makes a stream secure.",
+    limitations: "This was a CTF-style challenge, not a production deployment. The camera, router and TV were provided for the HiveHack room, and the workflow was not tested against arbitrary devices. The FFmpeg settings trade image quality and CPU for compatibility. server.py is a teaching server, not a hardened media service, and this page does not host a live feed or expose credentials.",
     sources: [
-      { label: "README: scope and streaming workflow", url: "https://github.com/DarkSoulEngineer/RTSP_TO_HTTP/blob/106fb39566c37d1be19102b9fdf4171dba1ff7d9/readme.md" },
+      { label: "HiveHack walkthrough: IoT challenge, RTSP to HTTP", url: "https://www.hivehack.tech/post/iot-hacking-challenge-walkthrough-rtsp-to-http" },
+      { label: "README: workflow, configuration and usage", url: "https://github.com/DarkSoulEngineer/RTSP_TO_HTTP/blob/106fb39566c37d1be19102b9fdf4171dba1ff7d9/readme.md" },
       { label: "Python HTTP server at reviewed commit", url: "https://github.com/DarkSoulEngineer/RTSP_TO_HTTP/blob/106fb39566c37d1be19102b9fdf4171dba1ff7d9/server.py" },
+      { label: "FFmpeg launcher at reviewed commit", url: "https://github.com/DarkSoulEngineer/RTSP_TO_HTTP/blob/106fb39566c37d1be19102b9fdf4171dba1ff7d9/live_stream.sh" },
+      { label: "RTSP credential-audit script at reviewed commit", url: "https://github.com/DarkSoulEngineer/RTSP_TO_HTTP/blob/106fb39566c37d1be19102b9fdf4171dba1ff7d9/crack/rtsp_crack.py" },
     ],
   },
 ];

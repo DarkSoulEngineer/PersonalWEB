@@ -8,17 +8,91 @@ import { PERSON_ID, absoluteUrl } from "@/lib/site";
 import { breadcrumbSchema } from "@/lib/structured-data";
 
 const DESCRIPTION =
-  "Web application and API penetration testing: agreed scope, manual validation, reproducible findings, remediation guidance and retesting.";
+  "Authorized, time-boxed security assessment for web applications and APIs: scoped manual review, reproducible findings, remediation guidance and optional retesting.";
+
+const PROFILE = [
+  { term: "Focus", detail: "Web applications and APIs" },
+  { term: "Model", detail: "Time-boxed, manual assessment" },
+  { term: "Deliverable", detail: "Prioritized findings and remediation guidance" },
+  { term: "Prerequisite", detail: "Written authorization and agreed scope" },
+];
+
+const COVERAGE = [
+  {
+    title: "Web applications",
+    body: "Authentication, session management, account recovery, role boundaries, input handling, file uploads and business workflows. The review covers the application as an authenticated user, not only the public login page.",
+  },
+  {
+    title: "APIs",
+    body: "Object-level and function-level authorization, token handling, data exposure, input validation and abuse of documented workflows. Coverage is mapped to the API documentation and agreed endpoints.",
+  },
+  {
+    title: "Adjacent technical work",
+    body: "Sub-GHz radio, embedded systems and industrial protocols appear in my project work. These require a separate feasibility and safety review and are not covered by a standard web or API assessment.",
+  },
+];
+
+const PHASES = [
+  {
+    title: "Scoping",
+    detail: "Confirm the assets, user roles, environments, test window, exclusions and escalation contacts. Authority to test is recorded before work starts.",
+    output: "Written scope and rules of engagement",
+  },
+  {
+    title: "Mapping",
+    detail: "Identify entry points, roles, trust boundaries and the workflows that carry business risk.",
+    output: "Coverage map and test plan",
+  },
+  {
+    title: "Review",
+    detail: "Manual review supported by tooling. The OWASP Web Security Testing Guide and API Security guidance inform the checklist; scanner output is treated as a lead, not a finding.",
+    output: "Validated observations",
+  },
+  {
+    title: "Validation",
+    detail: "Reproduce each issue with the minimum evidence needed to explain it. Stop and notify the agreed contact if availability or sensitive data is put at risk.",
+    output: "Confirmed findings and reproduction steps",
+  },
+  {
+    title: "Reporting",
+    detail: "Document the affected behavior, prerequisites, impact and remediation. Critical issues are raised during the assessment, not held for the final report.",
+    output: "Prioritized report and technical handover",
+  },
+  {
+    title: "Retest",
+    detail: "Where included, recheck the agreed fixes and document any residual limitations.",
+    output: "Retest update",
+  },
+];
+
+const DELIVERABLES = [
+  {
+    title: "Executive summary",
+    body: "The main risks, their business context and the order in which to address them.",
+  },
+  {
+    title: "Technical findings",
+    body: "Affected assets, prerequisites, reproduction steps, redacted evidence and severity rationale.",
+  },
+  {
+    title: "Remediation guidance",
+    body: "Practical fixes and verification advice for the engineering team.",
+  },
+  {
+    title: "Handover and retest",
+    body: "A technical walkthrough and a retest update when retesting is in scope.",
+  },
+];
 
 export const metadata = pageMetadata({
-  title: "Penetration Testing Services",
+  title: "Web & API Security Assessment",
   description: DESCRIPTION,
   path: "/services",
 });
 
 export default function ServicesPage() {
   const { profile, contact } = getCv();
-  const emailHref = `mailto:${contact.email}?subject=${encodeURIComponent("Penetration testing enquiry")}`;
+  const emailHref = `mailto:${contact.email}?subject=${encodeURIComponent("Security assessment enquiry")}`;
 
   return (
     <>
@@ -31,129 +105,150 @@ export default function ServicesPage() {
         "@type": "Service",
         "@id": `${absoluteUrl("/services")}#service`,
         url: absoluteUrl("/services"),
-        name: "Web application and API penetration testing",
-        serviceType: "Penetration testing",
+        name: "Web application and API security assessment",
+        serviceType: "Security assessment",
         description: DESCRIPTION,
         provider: { "@id": PERSON_ID },
       }} />
 
-      <PageHeader eyebrow="Services" title="Penetration Testing Services">
-        I test web applications and APIs for weaknesses in how they handle access, data and business logic.
-        The goal is a finding your team can reproduce, understand and fix.
+      <PageHeader eyebrow="Services" title="Web application and API security assessment">
+        A structured, time-boxed review of how an application handles authentication,
+        authorization, data and business logic. The result is a prioritized, reproducible
+        report your engineers can act on.
       </PageHeader>
 
       <div className="btn-row">
-        <a href={emailHref} className="btn"><MailIcon />Discuss a test</a>
+        <a href={emailHref} className="btn btn-primary">
+          <MailIcon />Request a scoping discussion
+        </a>
         <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer" className="btn">
-          <LinkedInIcon />Contact on LinkedIn
+          <LinkedInIcon />Connect on LinkedIn
         </a>
       </div>
 
-      <div className="prose services-copy">
-        <h2>What I test</h2>
-        <p>
-          My client assessment experience is in web application and API security.
-          My telecom and embedded projects inform how I approach systems, but they are not a claim
-          that every type of infrastructure or device is covered by the same engagement.
-        </p>
-        <h3>Web applications</h3>
-        <p>
-          Authentication, session handling, account recovery, access control between users and roles,
-          input handling, file uploads and business workflows. Testing includes the application as
-          an authenticated user, not just the public login page.
-        </p>
-        <h3>APIs</h3>
-        <p>
-          Object-level and function-level authorization, token handling, unintended data exposure,
-          input validation and abuse of documented workflows. API documentation and test accounts
-          help establish coverage; undocumented endpoints are assessed only within the agreed scope.
-        </p>
-        <h3>Wireless, hardware and protocol research</h3>
-        <p>
-          Sub-GHz radio, embedded systems and industrial protocols are also part of my project work.
-          If your question involves one of these, send the device and lab details first.
-          Feasibility, equipment and safety constraints need a separate discussion.
-          This is not an offer to test live industrial processes or transmit against third-party devices.
-        </p>
+      <div className="services-page">
+        <section aria-labelledby="engagement-profile" className="services-section">
+          <h2 id="engagement-profile" className="section-title">Engagement profile</h2>
+          <dl className="services-facts">
+            {PROFILE.map((item) => (
+              <div key={item.term} className="services-fact">
+                <dt>{item.term}</dt>
+                <dd>{item.detail}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
 
-        <h2>Scope before testing</h2>
-        <p>
-          Before any traffic is sent, we agree in writing on the assets, objectives, test window
-          and permitted techniques. You must own the systems or have authority to approve testing.
-          Third-party hosting or integrations may need separate permission.
-        </p>
-        <ul>
-          <li>Domains, applications, API endpoints and environments that are in scope.</li>
-          <li>User roles, test accounts, documentation and any source access being provided.</li>
-          <li>Excluded systems, sensitive workflows, request limits and stop conditions.</li>
-          <li>A named contact for urgent findings or unexpected service impact.</li>
-          <li>Evidence handling, report recipients, retention and deletion arrangements.</li>
-        </ul>
-        <p>
-          Staging with representative test data is preferable where possible. Denial of service,
-          social engineering, destructive changes and access to unrelated customer data are not
-          included by default. Any exception requires explicit agreement.
-        </p>
+        <section aria-labelledby="assessment-coverage" className="services-section">
+          <h2 id="assessment-coverage" className="section-title">Assessment coverage</h2>
+          <p className="services-intro">
+            My professional assessment work focuses on web application and API security.
+            Telecom and embedded projects inform how I read systems, but they are not presented
+            as equivalent coverage.
+          </p>
+          <div className="services-grid">
+            {COVERAGE.map((item) => (
+              <article key={item.title} className="services-card">
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
 
-        <h2>How the assessment works</h2>
-        <ol>
-          <li>
-            <strong>Map the application.</strong> Identify entry points, roles, trust boundaries
-            and the workflows that matter to your business.
-          </li>
-          <li>
-            <strong>Test the controls.</strong> Use manual testing supported by tooling,
-            with relevant OWASP Web Security Testing Guide and API Security guidance as references.
-            A scanner result is a lead to investigate, not a confirmed finding.
-          </li>
-          <li>
-            <strong>Validate the impact.</strong> Reproduce issues with the minimum evidence
-            needed to explain them. Stop and notify the agreed contact if testing risks service
-            availability or exposes unexpected sensitive data.
-          </li>
-          <li>
-            <strong>Report and discuss fixes.</strong> Explain the affected behavior,
-            prerequisites, impact and remediation. Critical issues are raised during the test,
-            not held until the final report.
-          </li>
-          <li>
-            <strong>Retest agreed fixes.</strong> Where included in the scope, check whether
-            the original issue is resolved and document any remaining limitations.
-          </li>
-        </ol>
+        <section aria-labelledby="assessment-process" className="services-section">
+          <h2 id="assessment-process" className="section-title">Assessment process</h2>
+          <ol className="services-process">
+            {PHASES.map((phase, index) => (
+              <li key={phase.title} className="services-process__item">
+                <span className="services-process__index" aria-hidden="true">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+                <div className="services-process__body">
+                  <h3>{phase.title}</h3>
+                  <p>{phase.detail}</p>
+                  <p className="services-process__output">
+                    <span>Output</span>
+                    {phase.output}
+                  </p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
 
-        <h2>What you receive</h2>
-        <ul>
-          <li>A concise summary of the main risks and their business context.</li>
-          <li>The tested scope, approach, coverage gaps and limitations.</li>
-          <li>Confirmed findings with affected assets, reproduction steps and redacted evidence.</li>
-          <li>Severity rationale, practical remediation advice and a technical handover.</li>
-          <li>A retest update when retesting is part of the agreement.</li>
-        </ul>
-        <p>
-          This is a time-bounded assessment, not a guarantee that a system has no vulnerabilities,
-          a compliance certification or a substitute for ongoing security work.
-        </p>
+        <section aria-labelledby="assessment-deliverables" className="services-section">
+          <h2 id="assessment-deliverables" className="section-title">Deliverables</h2>
+          <div className="services-deliverables">
+            {DELIVERABLES.map((item) => (
+              <div key={item.title} className="services-deliverable">
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            ))}
+          </div>
+          <p className="services-note">
+            The assessment is time-bounded. It is not a guarantee that a system has no
+            vulnerabilities, a compliance certification or a substitute for ongoing security work.
+          </p>
+        </section>
 
-        <h2>Discuss your scope</h2>
-        <p>
-          Email <a href={emailHref}>{contact.email}</a> or contact me on{" "}
-          <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>.
-          Include a short description of the application, the environment, approximate size,
-          user roles and your preferred dates. Availability, timing and fees are agreed after
-          reviewing the scope.
-        </p>
-        <p>
-          Do not send passwords, API keys, customer data or vulnerability evidence in the first message.
-          We can agree on an appropriate channel for sensitive material.
-          Engagement arrangements and authorization are confirmed before work starts;
-          this page does not imply endorsement by my employers.
-        </p>
-        <p>
-          For background, see my <Link href="/cv">CV</Link>,{" "}
-          <Link href="/projects">project work</Link> and{" "}
-          <Link href="/posts/cc1101-packet-mode-and-raw-capture">CC1101 research note</Link>.
-        </p>
+        <section aria-labelledby="scope-authorization" className="services-section">
+          <h2 id="scope-authorization" className="section-title">Scope and authorization</h2>
+          <div className="services-panel">
+            <div>
+              <h3>Rules of engagement</h3>
+              <ul>
+                <li>Written authorization from the system owner before any request is sent.</li>
+                <li>Agreed assets, test window, request limits and stop conditions.</li>
+                <li>A named contact for critical findings or unexpected service impact.</li>
+                <li>Defined evidence handling, report recipients and retention arrangements.</li>
+              </ul>
+            </div>
+            <div>
+              <h3>Excluded by default</h3>
+              <ul>
+                <li>Denial-of-service testing and destructive changes.</li>
+                <li>Social engineering and physical access.</li>
+                <li>Access to unrelated customer data.</li>
+                <li>Live industrial processes and third-party devices.</li>
+              </ul>
+            </div>
+          </div>
+          <p className="services-note">
+            Staging with representative test data is preferred. Any exception to the exclusions
+            requires explicit written agreement.
+          </p>
+        </section>
+
+        <section className="services-contact" aria-labelledby="assessment-contact">
+          <div>
+            <h2 id="assessment-contact">Start a scoping discussion</h2>
+            <p>
+              Send the application type, environment, approximate size, user roles and preferred
+              dates. Do not include passwords, API keys, customer data or vulnerability evidence
+              in the first message.
+            </p>
+            <p>
+              Assessment work begins only after written authorization from the system owner.
+              This page describes my assessment approach and does not imply endorsement by my
+              employers.
+            </p>
+            <p className="services-background">
+              For background, see my <Link href="/cv">CV</Link>,{" "}
+              <Link href="/projects">project work</Link> and{" "}
+              <Link href="/posts/cc1101-packet-mode-and-raw-capture">CC1101 research note</Link>.
+            </p>
+          </div>
+          <div className="services-contact__actions">
+            <a href={emailHref} className="btn btn-primary">
+              <MailIcon />Email me
+            </a>
+            <a href={profile.links.linkedin} target="_blank" rel="noopener noreferrer" className="btn">
+              <LinkedInIcon />LinkedIn
+            </a>
+          </div>
+        </section>
       </div>
     </>
   );

@@ -12,7 +12,7 @@
   {
     "id": 8,
     "name": "RTSP_TO_HTTP",
-    "description": "RTSP-to-HLS streaming with FFmpeg and a Python HTTP server, for viewing authorized camera streams in browsers and smart TVs.",
+    "description": "HiveHack @ CyberSea challenge pipeline: find an RTSP camera, convert the stream to HLS with FFmpeg and play it over HTTP in a smart TV browser.",
     "language": "Python",
     "category": "Networks",
     "url": "https://github.com/DarkSoulEngineer/RTSP_TO_HTTP",
