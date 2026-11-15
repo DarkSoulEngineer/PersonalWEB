@@ -1,5 +1,6 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { PauseIcon, PlayIcon, VolumeIcon, VolumeMuteIcon } from "@/components/ui/icons";
 import { RADIO_STATION, RADIO_TITLE, useRadio } from "./radio-context";
 
@@ -45,6 +46,7 @@ export default function RadioPlayer() {
         value={percent}
         onChange={(event) => setVolume(Number(event.target.value) / 100)}
         className="player__range"
+        style={{ "--volume": `${percent}%` } as CSSProperties}
         aria-label={`Volume ${percent} percent`}
       />
 

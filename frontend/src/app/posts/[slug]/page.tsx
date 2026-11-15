@@ -31,7 +31,7 @@ export async function generateMetadata({
   if (!post) return {};
   return pageMetadata({
     title: post.title,
-    description: post.excerpt,
+    description: post.description,
     path: `/posts/${post.id}`,
     type: "article",
     publishedTime: post.created_at ?? undefined,
@@ -103,6 +103,10 @@ export default async function PostPage({ params }: { params: Promise<{ slug: str
       <div className="prose">
         <Markdown content={post.content} />
       </div>
+      <nav className="article__footer" aria-label="Article navigation">
+        <BackLink />
+        <Link href="/projects" className="link-arrow">Related project work</Link>
+      </nav>
     </article>
   );
 }

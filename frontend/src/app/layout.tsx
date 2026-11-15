@@ -6,12 +6,10 @@ import RadioProvider from "@/components/radio/RadioProvider";
 import MobileRadio from "@/components/radio/MobileRadio";
 import JsonLd from "@/components/ui/JsonLd";
 import ScrollReveals from "@/components/ui/ScrollReveals";
-import { getProfile } from "@/lib/profile";
 import { THEME_SCRIPT } from "@/lib/theme";
 import {
   OG_IMAGE,
   SITE_DESCRIPTION,
-  SITE_KEYWORDS,
   SITE_NAME,
   SITE_TITLE,
   SITE_URL,
@@ -37,8 +35,6 @@ const mono = JetBrains_Mono({
   display: "swap",
 });
 
-const profile = getProfile();
-
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -47,10 +43,9 @@ export const metadata: Metadata = {
   },
   description: SITE_DESCRIPTION,
   applicationName: SITE_NAME,
-  keywords: SITE_KEYWORDS,
-  authors: [{ name: profile.name, url: SITE_URL }],
-  creator: profile.name,
-  publisher: profile.name,
+  authors: [{ name: SITE_NAME, url: SITE_URL }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   category: "technology",
   alternates: { canonical: "/" },
   openGraph: {

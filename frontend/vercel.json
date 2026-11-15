@@ -1,5 +1,24 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "cleanUrls": true,
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www\\.milchiscatalin\\.com" }],
+      "destination": "https://milchiscatalin.com/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/posts/cc1101-packet-mode-and-raw-capture",
+      "destination": "/posts/sub-ghz-radio-cc1101-basics",
+      "permanent": true
+    },
+    {
+      "source": "/posts/cc1101-packet-mode-and-raw-capture.html",
+      "destination": "/posts/sub-ghz-radio-cc1101-basics",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",

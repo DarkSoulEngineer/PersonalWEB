@@ -7,7 +7,7 @@ import { breadcrumbSchema, profilePageSchema } from "@/lib/structured-data";
 
 const TITLE = "CV";
 const DESCRIPTION =
-  "CV of Milchis Catalin-Marian: penetration tester at Arvato Systems Romania, telecom R&D at Mitel Networks and 4th-year Telecommunications student in Brasov. Experience, tools, projects and achievements.";
+  "Cătălin Milchiș's CV: penetration testing at Arvato Systems Romania, telecom R&D at Mitel Networks Romania, education, projects and cybersecurity activities.";
 
 export const metadata = pageMetadata({
   title: TITLE,

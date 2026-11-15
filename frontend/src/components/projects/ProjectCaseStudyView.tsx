@@ -30,6 +30,14 @@ export default function ProjectCaseStudyView({
         </a>
         <Link href="/cv" className="btn">About my experience</Link>
       </div>
+      <nav className="project-study__index" aria-label="Project sections">
+        <a href="#project-problem">{study.problemTitle ?? "The problem"}</a>
+        {architecture?.length ? <a href="#project-architecture">Architecture</a> : null}
+        {walkthrough?.length ? <a href="#project-walkthrough">Walkthrough</a> : null}
+        {implementation?.length ? <a href="#project-implementation">Implementation</a> : null}
+        {limitations ? <a href="#project-limitations">Limitations</a> : null}
+        <a href="#project-sources">Sources</a>
+      </nav>
 
       <div className="project-study__sections">
         <section aria-labelledby="project-problem">
@@ -71,7 +79,7 @@ export default function ProjectCaseStudyView({
                     <h3>{step.title}</h3>
                     <p>{step.description}</p>
                     {step.commands?.length ? (
-                      <pre><code>{step.commands.join("\n")}</code></pre>
+                      <pre tabIndex={0} role="region" aria-label={`${step.title} commands`}><code>{step.commands.join("\n")}</code></pre>
                     ) : null}
                   </li>
                 ))}

@@ -5,6 +5,7 @@ import type { PostDetail, PostListItem, Tag } from "./types";
 
 interface Frontmatter {
   title?: string;
+  description?: string;
   author?: string;
   date?: string;
   updated?: string;
@@ -57,6 +58,7 @@ function makeExcerpt(body: string, maxLength = 200): string {
 interface RawPost {
   slug: string;
   title: string;
+  description?: string;
   author: string;
   date: string;
   updated: string | null;
@@ -92,6 +94,7 @@ function readPosts(): RawPost[] {
     return {
       slug,
       title: data.title ?? slug,
+      description: data.description,
       author: data.author ?? "",
       date: data.date ?? "",
       updated,
@@ -135,6 +138,7 @@ export function getPost(slug: string): PostDetail | null {
     id: post.slug,
     title: post.title,
     content: post.body,
+    description: post.description || makeExcerpt(post.body, 160),
     author: post.author,
     tags: post.tags,
     created_at: post.date || null,

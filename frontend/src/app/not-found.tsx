@@ -4,6 +4,7 @@ import { ArrowRightIcon } from "@/components/ui/icons";
 
 export const metadata: Metadata = {
   title: "Page not found",
+  alternates: { canonical: null },
   robots: { index: false, follow: true },
 };
 

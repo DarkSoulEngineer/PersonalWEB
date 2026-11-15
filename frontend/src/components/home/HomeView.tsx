@@ -1,15 +1,22 @@
 import Link from "next/link";
 import ProjectCard from "@/components/projects/ProjectCard";
 import FocusRibbons from "@/components/home/FocusRibbons";
-import { ArrowRightIcon, ExternalIcon, GitHubIcon, LinkedInIcon, PinIcon } from "@/components/ui/icons";
+import { ArrowRightIcon, ExternalIcon, GitHubIcon, LinkedInIcon, MailIcon, PinIcon } from "@/components/ui/icons";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { formatDate } from "@/lib/format";
 import type { Cv, PostListItem } from "@/lib/types";
-import { HOME_HEADING, SITE_NAME } from "@/lib/site";
+import { HOME_HEADING } from "@/lib/site";
+
+const ROLE_CONTEXT: Record<string, string> = {
+  "Arvato Systems Romania": "Web application & API security",
+  "Mitel Networks Romania": "OpenScape 4000 · Internal tooling",
+};
 
 export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] }) {
   const { profile } = cv;
   const currentRoles = cv.experience.filter((job) => job.current);
+  const professionalRoles = currentRoles.filter((job) => profile.worksFor.includes(job.organization));
+  const communityRoles = currentRoles.filter((job) => !profile.worksFor.includes(job.organization));
 
   return (
     <div className="stack-xl">
@@ -35,11 +42,17 @@ export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] 
               className="hero__photo"
             />
             <div className="min-w-0">
-              <p className="eyebrow">{SITE_NAME}</p>
               <h1 id="hero-title" className="hero__headline hero__headline--side">{HOME_HEADING}</h1>
+              <p className="meta-line hero__location">
+                <PinIcon />
+                {profile.location}
+              </p>
             </div>
           </div>
           <p className="hero__bio">{profile.bio}</p>
+          <p className="hero__research">
+            My personal research covers RF security and embedded systems, alongside my telecommunications studies.
+          </p>
           <div className="btn-row">
             <Link href="/cv" className="btn btn-primary">
               View CV
@@ -53,45 +66,53 @@ export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] 
               <LinkedInIcon />
               LinkedIn
             </a>
+            <a href={`mailto:${cv.contact.email}`} className="btn">
+              <MailIcon />
+              Contact
+            </a>
           </div>
         </div>
 
-        <aside className="hero__aside card" aria-label="Current work and community">
-          <div className="hero__identity">
-            <img
-              src={profile.avatar}
-              alt={`${profile.aliases[0]} logo`}
-              width={64}
-              height={64}
-              className="avatar"
-            />
-            <div className="min-w-0">
-              <a href={profile.links.github} target="_blank" rel="noopener noreferrer me" className="hero__handle">
-                @{profile.github.login}
-              </a>
-              <p className="meta-line">
-                <PinIcon />
-                {profile.location}
-              </p>
-            </div>
-          </div>
-
-          {currentRoles.length > 0 ? (
+        <aside className="hero__aside" aria-label="Current professional experience">
+          {professionalRoles.length > 0 ? (
             <div className="hero__work">
-              <h2 className="hero__work-title">
-                  Currently
-              </h2>
+              <h2 className="hero__work-title">Current work</h2>
               <ul className="role-list">
-                {currentRoles.map((job) => (
+                {professionalRoles.map((job) => (
                   <li key={`${job.organization}-${job.role}`}>
-                    <p className="role-list__org">{job.organization}</p>
+                    <h3 className="role-list__org">{job.organization}</h3>
                     <p className="role-list__role">{job.role}</p>
+                    {ROLE_CONTEXT[job.organization] ? (
+                      <p className="role-list__focus">{ROLE_CONTEXT[job.organization]}</p>
+                    ) : null}
                   </li>
                 ))}
               </ul>
             </div>
           ) : null}
+
         </aside>
+
+        <div className="hero__foot">
+          {communityRoles.length > 0 ? (
+            <div className="hero__community">
+              <h2 className="hero__work-title">Community</h2>
+              <ul className="community-list">
+                {communityRoles.map((job) => (
+                  <li key={`${job.organization}-${job.role}`}>
+                    <p className="community-list__org">{job.organization}</p>
+                    <p className="community-list__role">{job.role}</p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          <Link href="/cv" className="hero__experience-link">
+            Experience & education
+            <ArrowRightIcon />
+          </Link>
+        </div>
       </section>
 
       <section aria-labelledby="focus-title">

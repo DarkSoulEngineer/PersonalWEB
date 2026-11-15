@@ -43,7 +43,11 @@ export default function ProjectsView({
         ))}
       </div>
 
-      <ul className="card-grid" key={activeLanguage}>
+      <p className="results-count" role="status">
+        {visible.length} {visible.length === 1 ? "project" : "projects"}
+        {activeLanguage ? ` in ${activeLanguage}` : ""}
+      </p>
+      <ul className="card-grid">
         {visible.map((project) => (
           <li key={project.id}>
             <ProjectCard project={project} />

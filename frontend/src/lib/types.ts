@@ -9,6 +9,7 @@ export interface PostListItem {
 }
 
 export interface PostDetail extends PostListItem {
+  description: string;
   content: string;
 }
 

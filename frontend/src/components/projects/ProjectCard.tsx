@@ -29,11 +29,16 @@ export default function ProjectCard({ project, headingLevel = 2 }: { project: Pr
         {detailPath ? <ArrowRightIcon className="card-title-icon" /> : <ExternalIcon className="card-title-icon" />}
       </Heading>
       <p className="card-text">{project.description}</p>
-      {project.github_updated_at ? (
-        <p className="card-foot">
-          Updated <time dateTime={project.github_updated_at}>{formatDateOnly(project.github_updated_at)}</time>
-        </p>
-      ) : null}
+      <p className="card-foot">
+        {project.github_updated_at ? (
+          <span>Updated <time dateTime={project.github_updated_at}>{formatDateOnly(project.github_updated_at)}</time></span>
+        ) : null}
+        {detailPath ? (
+          <a href={project.url} target="_blank" rel="noopener noreferrer" className="card-source" aria-label={`${project.name} source on GitHub`}>
+            Source on GitHub
+          </a>
+        ) : null}
+      </p>
     </article>
   );
 }

@@ -18,7 +18,12 @@ export function languageColor(language: string): string {
 }
 
 export function getProjects(): Project[] {
-  return projectsJson as Project[];
+  const priority = [1, 2, 6];
+  const rank = (id: number) => {
+    const index = priority.indexOf(id);
+    return index === -1 ? priority.length : index;
+  };
+  return (projectsJson as Project[]).slice().sort((a, b) => rank(a.id) - rank(b.id));
 }
 
 export function getLanguageCounts(): LanguageCount[] {

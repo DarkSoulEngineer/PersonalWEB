@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
-import { readdir, readFile, writeFile } from "node:fs/promises";
-import { resolve } from "node:path";
+import { copyFile, readdir, readFile, writeFile } from "node:fs/promises";
+import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
 // Static exports cannot use per-request nonces. Allow only the inline scripts
@@ -49,7 +49,38 @@ async function secureDirectory(directory) {
   return count;
 }
 
+// Next 16.4 on Windows leaves native separators in exported RSC segment names.
+// The browser requests dotted names on every platform. Keep the original files
+// and add only the missing aliases; remove when upstream normalizes separators.
+export async function normalizeSegmentFiles(directory, segmentPrefix = "") {
+  let count = 0;
+  for (const entry of await readdir(directory, { withFileTypes: true })) {
+    const source = join(directory, entry.name);
+    if (entry.isDirectory()) {
+      const prefix = segmentPrefix
+        ? `${segmentPrefix}${entry.name}.`
+        : entry.name.startsWith("__next.") ? `${source}.` : "";
+      count += await normalizeSegmentFiles(source, prefix);
+    } else if (segmentPrefix && entry.name.endsWith(".txt")) {
+      const destination = `${segmentPrefix}${entry.name}`;
+      const existing = await readFile(destination).catch(error => {
+        if (error.code !== "ENOENT") throw error;
+        return null;
+      });
+      if (existing) {
+        if (!existing.equals(await readFile(source))) throw new Error(`Conflicting RSC segment: ${destination}`);
+      } else {
+        await copyFile(source, destination);
+        count++;
+      }
+    }
+  }
+  return count;
+}
+
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
+  const aliases = await normalizeSegmentFiles(resolve("out"));
+  if (aliases) console.log(`Normalized ${aliases} static RSC segment filenames.`);
   const count = await secureDirectory(resolve("out"));
   if (count === 0) throw new Error("No exported HTML pages found");
   console.log(`Applied hash-based script policies to ${count} exported HTML pages.`);

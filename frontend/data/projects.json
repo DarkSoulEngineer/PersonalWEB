@@ -66,7 +66,7 @@
     "language": "Python",
     "category": "Security",
     "url": "https://github.com/DarkSoulEngineer/XDR_C2",
-    "featured": false,
+    "featured": true,
     "github_updated_at": "2025-06-25"
   },
   {

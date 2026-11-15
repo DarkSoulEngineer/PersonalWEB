@@ -9,7 +9,7 @@ import { breadcrumbSchema, collectionPageSchema } from "@/lib/structured-data";
 
 const TITLE = "Articles";
 const DESCRIPTION =
-  "Beginner explainers and technical notes by Milchis Catalin-Marian on radio, embedded systems, industrial protocols and security.";
+  "Introductory explainers and technical notes by Cătălin Milchiș on software-defined radio, CC1101 modules, Modbus and embedded systems security.";
 
 export const metadata = pageMetadata({
   title: TITLE,
@@ -29,13 +29,13 @@ export default function ArticlesPage() {
         ])}
       />
       <PageHeader eyebrow="Writing" title="Articles">
-        Plain-language explainers and technical notes on radio, embedded systems and security.
-        Each piece lists its sources and the limits of what was tested.
+        Technical articles and insights on radio communications, embedded systems, and security,
+        informed by hands-on research and practical experience.
       </PageHeader>
       <section className="start-here" aria-labelledby="start-here-title">
-        <p className="eyebrow" id="start-here-title">Start here</p>
+        <h2 className="eyebrow" id="start-here-title">Start here</h2>
         <p className="text-sm text-muted">
-          New to radio or industrial networks? These three build on each other.
+          New to radio or industrial networks?
         </p>
         <ol className="start-here__list">
           <li>

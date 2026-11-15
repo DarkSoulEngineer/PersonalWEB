@@ -13,7 +13,7 @@ HTML. There is no backend or database.
 - Articles archive at `/articles` with tag filtering (`/articles?tag=...`) and pagination
 - Post pages rendered from GitHub-flavored Markdown
 - Projects page with a client-side language filter
-- CV page with a two-page, ATS-friendly print-to-PDF layout
+- CV page with a complete, print-to-PDF layout and repeating page margins
 - Radio player (SomaFM "Seven Inch Soul")
 - Light and dark theme (follows the system setting, toggle in the header)
 
@@ -25,10 +25,21 @@ HTML. There is no backend or database.
 - Generated `sitemap.xml`, `robots.txt` and `manifest.webmanifest`
 - Favicons and app icons in `src/app/` and `public/`
 
+Public metadata uses **Cătălin Milchiș**, with the established full name and
+`DarkSoulEngineer` retained as identity aliases. Visible full-name branding and
+CV content remain separate from the metadata display name. The assessment
+methodology is marked up as a `WebPage`, not a commercial `Service` or business.
+
 Canonical URLs default to `https://milchiscatalin.com`, including local production
 builds and preview deployments. `NEXT_PUBLIC_SITE_URL` can explicitly override
 that origin; it must not include credentials, a path, query string or fragment.
 The release SEO check requires HTTPS and rejects Vercel preview aliases.
+Both production hostname overrides are normalized to the HTTPS apex domain.
+Both Vercel configurations redirect `www` to the apex, preserving paths and queries.
+After deployment, verify the redirect through Cloudflare with
+`curl -I "https://www.milchiscatalin.com/projects?ref=check"` and confirm the
+destination serves the same path without a loop. Dashboard-level domain redirects
+must also point toward the apex, not back to `www`.
 
 ```
 NEXT_PUBLIC_SITE_URL=https://milchiscatalin.com
@@ -115,6 +126,8 @@ npm run build
   attributes, plugins and form submissions are blocked. Inline CSS remains
   allowed for React styles. Edit source files and rebuild rather than modifying
   exported scripts after hashing.
+- The export postprocessor adds dotted aliases for RSC segment files emitted
+  with nested Windows separators by Next.js 16.4. Valid exports are left alone.
 - `vercel.json` adds anti-framing, MIME-sniffing, referrer and
   browser-permission protections. Vercel provides HTTPS and HSTS.
 - Markdown uses `react-markdown`'s default URL filtering without raw HTML
@@ -149,8 +162,10 @@ notes, security takeaways, limitations and commit-pinned source references.
 Update the review date only when the editorial content is actually reviewed.
 `src/lib/project-routes.ts` maps project cards to their internal detail pages.
 
-The build checks the exported `robots.txt`, `sitemap.xml`, canonical URLs, page
-titles/H1s, and structured data. Re-run those checks with `npm run verify:seo`.
+The build checks the exported `robots.txt`, `sitemap.xml`, canonical URLs, unique
+titles/descriptions, social metadata, H1s, assets, internal anchors and structured
+data entity references. It also checks that error pages are `noindex` without
+homepage canonicals. Re-run those checks with `npm run verify:seo`.
 The empty articles archive, empty-post placeholder and 404 page intentionally
 remain `noindex`; they are not included in the sitemap. This does not prevent
 the substantive pages from being indexed.
@@ -170,6 +185,7 @@ URL slug, and the frontmatter drives the archive:
 ```markdown
 ---
 title: My new article
+description: A concise factual summary for search and social metadata.
 author: Milchis Catalin-Marian
 date: 2026-10-09
 updated: 2026-10-10
@@ -179,6 +195,10 @@ likes: 0
 
 Article body in Markdown.
 ```
+
+`description` is optional and does not replace the visible article excerpt.
+When omitted, metadata falls back to an excerpt of the opening paragraph.
+Publication and update dates remain editorial values, not deployment timestamps.
 
 **Data** is plain JSON in `frontend/data/`:
 

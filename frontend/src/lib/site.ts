@@ -5,45 +5,17 @@ function resolveSiteUrl(): string {
     || url.pathname !== "/" || url.search || url.hash) {
     throw new Error("NEXT_PUBLIC_SITE_URL must be an HTTP(S) origin without credentials, path, query or fragment.");
   }
+  if (["milchiscatalin.com", "www.milchiscatalin.com"].includes(url.hostname)) return "https://milchiscatalin.com";
   return url.origin;
 }
 
 export const SITE_URL = resolveSiteUrl();
 
-export const SITE_NAME = "";
-export const SITE_TITLE = `Penetration Tester in Brașov, Romania`;
-export const HOME_HEADING = "Penetration Tester & Security Engineer in Brașov, Romania";
+export const SITE_NAME = "Cătălin Milchiș";
+export const SITE_TITLE = `Penetration Tester & Security Engineer | ${SITE_NAME}`;
+export const HOME_HEADING = "Penetration Tester & Security Engineer";
 export const SITE_DESCRIPTION =
-  "Milchiș Cătălin-Marian, Penetration Tester & Security Engineer in Brașov, Romania. Web and API security assessments, telecom R&D and open-source security projects.";
-
-export const SITE_KEYWORDS = [
-  "Milchis Catalin-Marian",
-  SITE_NAME,
-  "Catalin Milchis",
-  "Milchis Catalin",
-  "Cătălin-Marian Milchis",
-  "DarkSoulEngineer",
-  "penetration tester",
-  "pentester Romania",
-  "pentester Brasov",
-  "ethical hacker",
-  "telecom",
-  "telecommunications engineering",
-  "telecommunications student",
-  "vulnerability assessment",
-  "Mitel Networks Romania",
-  "web application security",
-  "API security",
-  "CTF UNITBV",
-  "Google.org Cybersecurity Seminars",
-  "Brasov Cybersecurity Community",
-  "Arvato Systems Romania",
-  "Transilvania University of Brasov",
-  "cybersecurity Brasov",
-  "Brașov",
-  "CV",
-  "portfolio",
-];
+  "Cătălin Milchiș is a penetration tester and security engineer in Brașov, Romania, with experience in application security, telecom R&D and embedded systems research.";
 
 export const OG_IMAGE = {
   url: "/og.jpg",

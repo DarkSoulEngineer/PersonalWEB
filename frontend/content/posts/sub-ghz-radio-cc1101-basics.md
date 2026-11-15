@@ -1,5 +1,6 @@
 ---
 title: Sub-GHz radio for beginners: what a CC1101 module does
+description: How CC1101 sub-GHz radio modules work: SPI control, modulation, matching settings, packet and raw modes, CRC limits and safe bench testing.
 author: Milchiș Cătălin-Marian
 date: 2026-11-14
 tags: Beginner, Radio, CC1101, Embedded

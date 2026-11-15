@@ -52,6 +52,25 @@ const components: Components = {
     void node;
     return <h2 {...props}>{children}</h2>;
   },
+  pre: ({ node, children, ...props }) => {
+    void node;
+    return <pre {...props} tabIndex={0} role="region" aria-label="Code example">{children}</pre>;
+  },
+  code: ({ node, children, className, ...props }) => {
+    void node;
+    // The current articles contain Bash examples. Highlight on the server and
+    // leave other languages untouched, without shipping a browser highlighter.
+    const bash = className === "language-bash" && typeof children === "string";
+    return (
+      <code {...props} className={className}>
+        {bash ? children.split(/("(?:\\.|[^"\\])*"|'[^']*'|(?:^|\s)#[^\n]*|(?<=\s)--?[\w-]+)/gm).map((part, index) => {
+          const token = part.trimStart();
+          const kind = /^["']/.test(token) ? "string" : token.startsWith("#") ? "comment" : /^--?[\w]/.test(token) ? "option" : null;
+          return kind ? <span key={index} className={`syntax-${kind}`}>{part}</span> : part;
+        }) : children}
+      </code>
+    );
+  },
   // ReactMarkdown blanks unsafe protocols, so a missing or empty src means the
   // image was rejected. Render nothing rather than requesting the page itself.
   img: ({ src, alt = "" }) => {

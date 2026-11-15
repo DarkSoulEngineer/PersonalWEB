@@ -63,3 +63,22 @@ test("safe Markdown images still render", () => {
   }));
   assert.match(html, /<img\b[^>]*src="\/media\/diagram\.png"[^>]*alt="diagram"/);
 });
+
+test("Bash examples are highlighted without executing markup or changing commands", () => {
+  const command = 'modbus read 127.0.0.1 --slave 1 "<script>alert(1)</script>"';
+  const html = renderToStaticMarkup(Markdown({ content: `\`\`\`bash\n${command}\n\`\`\`` }));
+  assert.match(html, /class="syntax-option">--slave<\/span>/);
+  assert.match(html, /class="syntax-string"/);
+  assert.match(html, /tabindex="0" role="region" aria-label="Code example"/);
+  assert.doesNotMatch(html, /<script\b/);
+  assert.ok(html.includes("&lt;script&gt;"));
+});
+
+test("Markdown keeps unsupported code languages and inline code as plain text", () => {
+  const html = renderToStaticMarkup(Markdown({
+    content: "Use `--slave`.\n\n```python\nprint('--slave')\n```",
+  }));
+  assert.doesNotMatch(html, /syntax-option/);
+  assert.match(html, /class="language-python"/);
+  assert.match(html, /<code>--slave<\/code>/);
+});

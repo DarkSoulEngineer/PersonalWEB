@@ -5,7 +5,7 @@ import { CloseIcon, VolumeIcon } from "@/components/ui/icons";
 import RadioPlayer from "./RadioPlayer";
 
 export default function MobileRadio() {
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   return (
     <div className="mobile-radio" data-collapsed={collapsed}>

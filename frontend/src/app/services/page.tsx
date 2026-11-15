@@ -4,11 +4,11 @@ import PageHeader from "@/components/ui/PageHeader";
 import { LinkedInIcon, MailIcon } from "@/components/ui/icons";
 import { getCv } from "@/lib/cv";
 import { pageMetadata } from "@/lib/seo";
-import { PERSON_ID, absoluteUrl } from "@/lib/site";
+import { PERSON_ID, WEBSITE_ID, absoluteUrl } from "@/lib/site";
 import { breadcrumbSchema } from "@/lib/structured-data";
 
 const DESCRIPTION =
-  "Authorized, time-boxed security assessment: scoped manual review, reproducible findings, remediation guidance and optional retesting.";
+  "Cătălin Milchiș's security assessment approach: scoped technical analysis, authorized testing, vulnerability validation, reporting and optional retesting.";
 
 const PHASES = [
   {
@@ -37,7 +37,7 @@ const PHASES = [
     output: "Prioritized report and technical handover",
   },
   {
-    title: "Retest",
+    title: "Retesting",
     detail: "Where included, recheck the agreed fixes and document any residual limitations.",
     output: "Retest update",
   },
@@ -80,18 +80,20 @@ export default function ServicesPage() {
       ])} />
       <JsonLd data={{
         "@context": "https://schema.org",
-        "@type": "Service",
-        "@id": `${absoluteUrl("/services")}#service`,
+        "@type": "WebPage",
+        "@id": `${absoluteUrl("/services")}#webpage`,
         url: absoluteUrl("/services"),
         name: "Security assessment",
-        serviceType: "Security assessment",
         description: DESCRIPTION,
-        provider: { "@id": PERSON_ID },
+        author: { "@id": PERSON_ID },
+        isPartOf: { "@id": WEBSITE_ID },
+        inLanguage: "en",
       }} />
 
       <PageHeader eyebrow="Services" title="Security assessment">
-        A structured, time-boxed review of how a system handles access, data and business
-        logic. The result is a prioritized, reproducible report your engineers can act on.
+        Web application penetration testing, API security assessment and vulnerability
+        assessment. A scoped review of access controls, data handling and business logic,
+        with reproducible findings and remediation guidance.
       </PageHeader>
 
       <div className="btn-row">
@@ -175,7 +177,7 @@ export default function ServicesPage() {
             <h2 id="assessment-contact">Start a scoping discussion</h2>
             <p>
               Send a short description of the systems, the environment, approximate size, user
-              roles and preferred dates.
+              roles and preferred dates. Do not include credentials or sensitive data in the initial email.
             </p>
             <p>
               Assessment work begins only after written authorization from the system owner.

@@ -16,12 +16,13 @@ export default function ArticlesView({ posts, tags }: { posts: PostListItem[]; t
     const applyFromUrl = () => {
       const params = new URLSearchParams(window.location.search);
       setPage(1);
-      setActiveTag(params.get("tag") ?? "");
+      const tag = params.get("tag") ?? "";
+      setActiveTag(tags.some((item) => item.name === tag) ? tag : "");
     };
     applyFromUrl();
     window.addEventListener("popstate", applyFromUrl);
     return () => window.removeEventListener("popstate", applyFromUrl);
-  }, []);
+  }, [tags]);
 
   const filtered = posts.filter((post) => !activeTag || post.tags.includes(activeTag));
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
@@ -29,8 +30,13 @@ export default function ArticlesView({ posts, tags }: { posts: PostListItem[]; t
   const visiblePosts = filtered.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   function selectTag(name: string) {
+    const next = name === activeTag ? "" : name;
     setPage(1);
-    setActiveTag(name === activeTag ? "" : name);
+    setActiveTag(next);
+    const url = new URL(window.location.href);
+    if (next) url.searchParams.set("tag", next);
+    else url.searchParams.delete("tag");
+    window.history.pushState(window.history.state, "", `${url.pathname}${url.search}`);
   }
 
   if (posts.length === 0) {
@@ -63,6 +69,10 @@ export default function ArticlesView({ posts, tags }: { posts: PostListItem[]; t
         </div>
       )}
 
+      <p className="results-count" role="status">
+        {filtered.length} {filtered.length === 1 ? "article" : "articles"}
+        {activeTag ? ` tagged ${activeTag}` : ""}
+      </p>
       {visiblePosts.length === 0 ? (
         <div className="empty-state">
           <p className="text-sm text-muted">No articles match the selected tag.</p>

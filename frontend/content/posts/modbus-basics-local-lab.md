@@ -1,5 +1,6 @@
 ---
 title: Modbus for beginners: read your first registers in a local lab
+description: Learn Modbus registers, coils, function codes, addressing and byte order, then use a Python client and local TCP simulator to read and write test values.
 author: Milchiș Cătălin-Marian
 date: 2026-11-13
 tags: Beginner, Modbus, Industrial, Lab

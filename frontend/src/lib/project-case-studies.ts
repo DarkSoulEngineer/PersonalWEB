@@ -29,8 +29,8 @@ export const PROJECT_CASE_STUDIES: ProjectCaseStudy[] = [
   {
     projectId: 1,
     slug: "cc1101-driver",
-    title: "CC1101_DRIVER: what a sub-GHz radio module can do",
-    metaTitle: "CC1101 Modules: What They Are and What They Do",
+    title: "CC1101_DRIVER: an ESP-IDF sub-GHz radio driver",
+    metaTitle: "CC1101_DRIVER: ESP-IDF Sub-GHz Radio Driver",
     description: "A short guide to CC1101 sub-GHz transceivers: what the module is, what you can use it for, and where the ESP32-S3 driver fits in.",
     reviewedAt: "2026-11-15",
     problemTitle: "What it is",
@@ -50,6 +50,10 @@ export const PROJECT_CASE_STUDIES: ProjectCaseStudy[] = [
       { title: "Your application", description: "Turns those bytes into a sensor reading, a remote command, a log entry or a test result." },
     ],
     architectureCaption: "The module moves bytes. The microcontroller and your firmware decide what they mean.",
+    implementation: [
+      "An ESP-IDF C component targets the CC1101 on an ESP32-S3, with SPI configuration for frequency, modulation and packet options.",
+      "Framed packet transmission and reception are separate from raw demodulator capture. The raw path captures digital pulse timing, not I/Q samples.",
+    ],
     securityTakeaways: [
       "A valid CRC detects transmission errors. It does not prove who sent a frame or stop a replay; authentication belongs in the protocol.",
       "Only transmit on hardware and frequencies you own or are authorized to test, within your region's power and duty-cycle limits.",
