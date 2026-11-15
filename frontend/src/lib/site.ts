@@ -10,8 +10,8 @@ function resolveSiteUrl(): string {
 
 export const SITE_URL = resolveSiteUrl();
 
-export const SITE_NAME = "Milchiș Cătălin-Marian";
-export const SITE_TITLE = `${SITE_NAME} | Penetration Tester in Brașov, Romania`;
+export const SITE_NAME = "";
+export const SITE_TITLE = `Penetration Tester in Brașov, Romania`;
 export const HOME_HEADING = "Penetration Tester & Security Engineer in Brașov, Romania";
 export const SITE_DESCRIPTION =
   "Milchiș Cătălin-Marian, Penetration Tester & Security Engineer in Brașov, Romania. Web and API security assessments, telecom R&D and open-source security projects.";
