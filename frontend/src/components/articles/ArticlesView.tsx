@@ -86,7 +86,9 @@ export default function ArticlesView({ posts, tags }: { posts: PostListItem[]; t
               </time>
               <div className="min-w-0">
                 <h2 className="post-row__title">
-                  <Link href={`/posts/${post.id}`}>{post.title}</Link>
+                  <Link href={`/posts/${post.id}`}>
+                    {post.title}<ArrowRightIcon className="inline-link-icon" />
+                  </Link>
                 </h2>
                 <p className="post-row__excerpt">{post.excerpt}</p>
                 {post.tags.length > 0 && (

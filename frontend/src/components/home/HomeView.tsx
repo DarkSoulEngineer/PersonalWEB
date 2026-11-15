@@ -179,7 +179,9 @@ export default function HomeView({ cv, posts }: { cv: Cv; posts: PostListItem[] 
                 </time>
                 <div className="min-w-0">
                   <h3 className="post-row__title">
-                    <Link href={`/posts/${post.id}`}>{post.title}</Link>
+                    <Link href={`/posts/${post.id}`}>
+                      {post.title}<ArrowRightIcon className="inline-link-icon" />
+                    </Link>
                   </h3>
                   <p className="post-row__excerpt">{post.excerpt}</p>
                 </div>

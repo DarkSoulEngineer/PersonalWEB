@@ -1,7 +1,9 @@
 import CvToolbar from "@/components/cv/CvToolbar";
 import { ExternalIcon, GitHubIcon, LinkedInIcon, MailIcon, PinIcon } from "@/components/ui/icons";
-import { languageColor } from "@/lib/projects";
+import { getProjects, languageColor } from "@/lib/projects";
 import type { Cv } from "@/lib/types";
+
+const PRINT_PROJECT_IDS = new Set([1, 2, 11, 8]);
 
 function displayUrl(url: string): string {
   return url.replace(/^https?:\/\/(www\.)?/, "").replace(/\/+$/, "");
@@ -17,6 +19,11 @@ function formatMonth(iso: string | null): string {
 export default function CvView({ cv }: { cv: Cv }) {
   const { profile } = cv;
   const { education } = profile;
+  const brainrot = getProjects().find((project) => project.id === 11);
+  const projects = cv.featuredProjects.flatMap((project) => {
+    if (project.id !== 6) return [project];
+    return brainrot ? [brainrot] : [];
+  });
 
   return (
     <div className="cv">
@@ -55,7 +62,12 @@ export default function CvView({ cv }: { cv: Cv }) {
             <h2 id="cv-summary" className="cv-heading">
               Profile
             </h2>
-            <p className="cv-text">{cv.summary}</p>
+            <p className="cv-text cv-summary--full">{cv.summary}</p>
+            <p className="cv-text cv-summary--print">
+              Penetration Tester and fourth-year Telecommunications student at Transilvania
+              University of Brașov, focused on web and API security and telecom R&amp;D.
+              Active in Google.org Cybersecurity Seminars, CyberBrașov and InvataCyber.ro.
+            </p>
           </section>
 
           <section id="experience" className="cv-section" aria-labelledby="cv-experience">
@@ -78,11 +90,13 @@ export default function CvView({ cv }: { cv: Cv }) {
                     </h3>
                     <span className="cv-entry__date">{job.period}</span>
                   </div>
-                  <ul className="cv-points">
-                    {job.points.map((point) => (
-                      <li key={point}>{point}</li>
-                    ))}
-                  </ul>
+                  {job.organization !== "Schaeffler Romania SRL" ? (
+                    <ul className="cv-points">
+                      {job.points.map((point) => (
+                        <li key={point}>{point}</li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </li>
               ))}
             </ol>
@@ -112,9 +126,12 @@ export default function CvView({ cv }: { cv: Cv }) {
             <h2 id="cv-work" className="cv-heading">
               Projects
             </h2>
-            <ol className="cv-entries">
-              {cv.featuredProjects.map((project) => (
-                <li key={project.id} className="cv-entry cv-project">
+            <ul className="cv-entries">
+              {projects.map((project) => (
+                <li
+                  key={project.id}
+                  className={`cv-entry cv-project${PRINT_PROJECT_IDS.has(project.id) ? "" : " cv-project--additional"}`}
+                >
                   <span className="cv-project__head">
                     <a href={project.url} target="_blank" rel="noopener noreferrer" className="cv-project__name">
                       {project.name}
@@ -132,7 +149,7 @@ export default function CvView({ cv }: { cv: Cv }) {
                   <span className="cv-project__desc">{project.description}</span>
                 </li>
               ))}
-            </ol>
+            </ul>
           </section>
 
           <section id="education" className="cv-section" aria-labelledby="cv-education">

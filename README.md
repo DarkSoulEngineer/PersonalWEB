@@ -13,9 +13,15 @@ HTML. There is no backend or database.
 - Articles archive at `/articles` with tag filtering (`/articles?tag=...`) and pagination
 - Post pages rendered from GitHub-flavored Markdown
 - Projects page with a client-side language filter
-- CV page with a complete, print-to-PDF layout and repeating page margins
+- CV page with full online detail and a one-page A4 print-to-PDF layout
 - Radio player (SomaFM "Seven Inch Soul")
 - Light and dark theme (follows the system setting, toggle in the header)
+
+The printed CV uses a shorter profile, four projects without numbering or
+descriptions, and training titles with dates. Schaeffler is listed with its
+role and dates only. Other experience and education bullet points remain.
+The online CV retains the project and training descriptions.
+For PDF export, use A4 at 100% scale with browser headers and footers disabled.
 
 ## SEO
 
