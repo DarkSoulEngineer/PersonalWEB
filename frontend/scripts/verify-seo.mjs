@@ -194,11 +194,16 @@ for (const file of ["404.html", "_not-found.html"]) {
 
 for (const configPath of ["../vercel.json", "vercel.json"]) {
   const config = JSON.parse(await readFile(resolve(configPath), "utf8"));
-  assert.ok(config.redirects.some((rule) =>
-    rule.source === "/:path*" && rule.permanent
-    && rule.destination === "https://milchiscatalin.com/:path*"
-    && rule.has?.some((condition) => condition.type === "host" && condition.value === "www\\.milchiscatalin\\.com")
-  ), `${configPath}: missing hostname-scoped canonical redirect`);
+  const [homepage, nestedPaths] = ["/", "/:path*"].map((path) =>
+    config.redirects.findIndex((rule) =>
+      rule.source === path && rule.permanent === true
+      && rule.destination === `https://milchiscatalin.com${path}`
+      && rule.has?.length === 1
+      && rule.has[0].type === "host" && rule.has[0].value === "www\\.milchiscatalin\\.com"
+    )
+  );
+  assert.ok(homepage >= 0, `${configPath}: missing explicit www homepage redirect`);
+  assert.ok(nestedPaths > homepage, `${configPath}: expected a www path redirect after the homepage redirect`);
 }
 
 console.log(`SEO checks passed: ${urls.length} indexable URLs, unique titles, social metadata, canonicals, assets, internal anchors, redirects and structured data.`);

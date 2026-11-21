@@ -42,10 +42,12 @@ that origin; it must not include credentials, a path, query string or fragment.
 The release SEO check requires HTTPS and rejects Vercel preview aliases.
 Both production hostname overrides are normalized to the HTTPS apex domain.
 Both Vercel configurations redirect `www` to the apex, preserving paths and queries.
-After deployment, verify the redirect through Cloudflare with
-`curl -I "https://www.milchiscatalin.com/projects?ref=check"` and confirm the
-destination serves the same path without a loop. Dashboard-level domain redirects
-must also point toward the apex, not back to `www`.
+The homepage has its own rule because the deployed wildcard redirected nested
+paths but served the `www` homepage with a 200. After deployment, verify both
+`https://www.milchiscatalin.com/?ref=check` and
+`https://www.milchiscatalin.com/projects?ref=check` with `curl -I`. Each should
+return a permanent redirect to the same path and query on the apex, which should
+return 200. Dashboard-level domain redirects must also point toward the apex.
 
 ```
 NEXT_PUBLIC_SITE_URL=https://milchiscatalin.com
