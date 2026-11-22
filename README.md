@@ -1,194 +1,93 @@
-# MILCHIS
+# PersonalWEB
+**Personal blog and portfolio of Milchis Catalin-Marian — cybersecurity, RF security, and software development**
 
-Personal blog and portfolio of Milchis Catalin-Marian (`DarkSoulEngineer`),
-focused on cybersecurity, radio-frequency security and software development.
+[![License](https://img.shields.io/badge/license-unlicensed-lightgrey)](#license)
+![Next.js](https://img.shields.io/badge/Next.js-16-black)
+![TypeScript](https://img.shields.io/badge/TypeScript-React%2019-3178c6)
 
-The site is a fully static [Next.js](https://nextjs.org/) app. Pages are
-generated at build time from Markdown posts and JSON data, then served as plain
-HTML. There is no backend or database.
+<p align="center">
+  <img src="images/home-dark.png" alt="Site home page in dark theme" width="900">
+</p>
 
-## Features
+## Table of Contents
 
-- Home: profile, focus areas, selected projects and latest articles
-- Articles archive at `/articles` with tag filtering (`/articles?tag=...`) and pagination
-- Post pages rendered from GitHub-flavored Markdown
-- Projects page with a client-side language filter
+- [Overview](#overview)
+- [Key Features](#key-features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Screenshots](#screenshots)
+- [Authoring Content](#authoring-content)
+- [Related Links](#related-links)
+- [License](#license)
+
+## Overview
+
+A fully static Next.js site: pages are generated at build time from Markdown
+posts and JSON data, then served as plain HTML. There is no backend or
+database. The live site is [milchiscatalin.com](https://milchiscatalin.com),
+deployed on Vercel from `main`.
+
+## Key Features
+
+- Home with profile, focus areas, selected projects, and latest articles
+- Articles archive with tag filtering and pagination; posts rendered from GitHub-flavored Markdown
+- Projects page with a language filter and source-backed case studies (`/projects/cc1101-driver`, `/projects/modbus`, `/projects/rtsp-to-http`)
 - CV page with full online detail and a one-page A4 print-to-PDF layout
-- Radio player (SomaFM "Seven Inch Soul")
-- Light and dark theme (follows the system setting, toggle in the header)
+- Radio player (SomaFM "Seven Inch Soul") and light/dark theme following the system setting
+- SEO built in: per-page canonical URLs, Open Graph/Twitter cards, JSON-LD, sitemap, and a build-time SEO check (`npm run verify:seo`)
+- Hardened static export: per-page CSP with hashed inline scripts, anti-framing and MIME-sniffing headers
 
-The printed CV uses a shorter profile, four projects without numbering or
-descriptions, and training titles with dates. Schaeffler is listed with its
-role and dates only. Other experience and education bullet points remain.
-The online CV retains the project and training descriptions.
-For PDF export, use A4 at 100% scale with browser headers and footers disabled.
+## Requirements
 
-## SEO
+- Node.js 20+ and npm
 
-- Per-page titles, descriptions and canonical URLs (`src/lib/seo.ts`)
-- Open Graph and Twitter cards with a shared preview image (`public/og.jpg`)
-- JSON-LD structured data: `Person`, `WebSite`, `ProfilePage`, `BreadcrumbList`, `BlogPosting` (`src/lib/structured-data.ts`)
-- Generated `sitemap.xml`, `robots.txt` and `manifest.webmanifest`
-- Favicons and app icons in `src/app/` and `public/`
-
-Public metadata uses **Cătălin Milchiș**, with the established full name and
-`DarkSoulEngineer` retained as identity aliases. Visible full-name branding and
-CV content remain separate from the metadata display name. The assessment
-methodology is marked up as a `WebPage`, not a commercial `Service` or business.
-
-Canonical URLs default to `https://milchiscatalin.com`, including local production
-builds and preview deployments. `NEXT_PUBLIC_SITE_URL` can explicitly override
-that origin; it must not include credentials, a path, query string or fragment.
-The release SEO check requires HTTPS and rejects Vercel preview aliases.
-Both production hostname overrides are normalized to the HTTPS apex domain.
-Both Vercel configurations redirect `www` to the apex, preserving paths and queries.
-The homepage has its own rule because the deployed wildcard redirected nested
-paths but served the `www` homepage with a 200. After deployment, verify both
-`https://www.milchiscatalin.com/?ref=check` and
-`https://www.milchiscatalin.com/projects?ref=check` with `curl -I`. Each should
-return a permanent redirect to the same path and query on the apex, which should
-return 200. Dashboard-level domain redirects must also point toward the apex.
-
-```
-NEXT_PUBLIC_SITE_URL=https://milchiscatalin.com
-```
-
-## Tech stack
-
-| Layer     | Technology                                             |
-| --------- | ------------------------------------------------------ |
-| Framework | Next.js 16 (App Router, Turbopack, `output: "export"`) |
-| UI        | React 19 + TypeScript                                  |
-| Styling   | Tailwind CSS 4                                         |
-| Markdown  | `react-markdown` + `remark-gfm`                        |
-
-## Project structure
-
-```
-PersonalWEB/
-└── frontend/                  # Next.js static site
-    ├── src/
-    │   ├── app/               # App Router pages
-    │   │   ├── page.tsx       # Home: profile hero
-    │   │   ├── articles/page.tsx  # Articles archive
-    │   │   ├── projects/page.tsx  # Projects + language filter
-    │   │   ├── projects/[slug]/  # Source-backed project case studies
-    │   │   ├── cv/page.tsx    # CV page
-    │   │   ├── posts/[slug]/  # Post detail (static via generateStaticParams)
-    │   │   └── not-found.tsx  # 404 page
-    │   ├── components/        # Feature-grouped views
-    │   │   ├── layout/        # SiteHeader, SiteFooter
-    │   │   ├── home/          # HomeView
-    │   │   ├── articles/      # ArticlesView
-    │   │   ├── projects/      # ProjectsView, ProjectCard
-    │   │   ├── cv/            # CvView, CvIndex, PrintButton
-    │   │   ├── radio/         # RadioProvider, player controls
-    │   │   └── ui/            # PageHeader, SectionHeader, JsonLd, Markdown, icons
-    │   └── lib/               # posts, profile, projects, cv, seo, site, structured-data
-    ├── content/posts/         # Markdown articles (frontmatter + body)
-    ├── data/                  # profile, projects, cv (JSON)
-    └── public/                # static assets (images)
-```
-
-## Getting started
-
-Requires Node.js 20+ and npm.
+## Installation
 
 ```powershell
-cd frontend
-npm install        # first time only
+git clone https://github.com/DarkSoulEngineer/PersonalWEB.git
+cd PersonalWEB\frontend
+npm install
+```
+
+## Usage
+
+```powershell
 npm run dev        # dev server at http://localhost:3000
-```
-
-## Build (static export)
-
-```powershell
-cd frontend
-npm run build      # writes the static site to frontend/out/
-```
-
-Serve `frontend/out/` with any static host (GitHub Pages, Netlify, nginx). Every
-route is pre-rendered, including `404.html`.
-
-## Linting
-
-```powershell
-cd frontend
+npm run build      # static export to frontend/out/
 npm run lint
+npm run verify:seo # post-build SEO checks
 ```
 
-## Security checks
+Serve `frontend/out/` with any static host. On Vercel, keep the Root Directory
+at the repository root; the root `vercel.json` installs, builds, and serves the
+export with clean URLs and security headers. For GitHub Pages, set
+`basePath: "/PersonalWEB"` and `assetPrefix` in `frontend/next.config.ts`
+before building.
 
-```powershell
-cd frontend
-npm audit
-npm test
-npm run lint
-npm run build
-```
+To export the CV as PDF, use the print button on `/cv`: A4, 100% scale,
+browser headers and footers disabled.
 
-- A scoped `minimatch` override fixes GHSA-g3hv-75wg-m249 in the TypeScript
-  lint tooling. Remove it when the parent dependency adopts a patched version.
-- The build adds a per-page Content Security Policy to the static HTML. Inline
-  JavaScript is allowed only by its build-generated SHA-256 hash; event-handler
-  attributes, plugins and form submissions are blocked. Inline CSS remains
-  allowed for React styles. Edit source files and rebuild rather than modifying
-  exported scripts after hashing.
-- The export postprocessor adds dotted aliases for RSC segment files emitted
-  with nested Windows separators by Next.js 16.4. Valid exports are left alone.
-- `vercel.json` adds anti-framing, MIME-sniffing, referrer and
-  browser-permission protections. Vercel provides HTTPS and HSTS.
-- Markdown uses `react-markdown`'s default URL filtering without raw HTML
-  execution. JSON-LD escapes `<` to prevent script-tag breakout.
-- `start.ps1` serves locally on `127.0.0.1`, restricts files to the export
-  directory, and does not expose error stack traces to browsers.
+## Screenshots
 
-These checks address known findings; they are not a guarantee that the site is
-free of all vulnerabilities.
+Articles archive and project index:
 
-## Deploying to Vercel
+![Articles](images/articles.png)
 
-Keep Vercel's **Root Directory** set to `.` (the repository root). The root
-`vercel.json` preserves the existing deployment setup: install with
-`npm --prefix frontend ci`, build with `npm run build`, and serve `frontend/out`
-with clean URLs. The root build command delegates to the frontend build,
-including its security post-processing. Pushing `main` triggers the connected
-production deployment. The HTTP headers are Vercel-specific; other hosts need
-equivalent configuration. `frontend/vercel.json` also supports deploying the
-frontend directory directly.
+![Projects](images/projects.png)
 
-## Authoring content
+CV page:
 
-Content lives in `frontend/` and is read at build time.
+![CV](images/cv.png)
 
-### Project case studies and indexing
+Light theme:
 
-The indexable project pages `/projects/cc1101-driver`, `/projects/modbus` and
-`/projects/rtsp-to-http` are generated from `src/lib/project-case-studies.ts`.
-Each contains a problem statement, responsive architecture diagram, implementation
-notes, security takeaways, limitations and commit-pinned source references.
-Update the review date only when the editorial content is actually reviewed.
-`src/lib/project-routes.ts` maps project cards to their internal detail pages.
+![Home in light theme](images/home-light.png)
 
-The build checks the exported `robots.txt`, `sitemap.xml`, canonical URLs, unique
-titles/descriptions, social metadata, H1s, assets, internal anchors and structured
-data entity references. It also checks that error pages are `noindex` without
-homepage canonicals. Re-run those checks with `npm run verify:seo`.
-The empty articles archive, empty-post placeholder and 404 page intentionally
-remain `noindex`; they are not included in the sitemap. This does not prevent
-the substantive pages from being indexed.
+## Authoring Content
 
-After deployment, submit `https://milchiscatalin.com/sitemap.xml` in Google Search
-Console and inspect the homepage and project URLs with the live URL test.
-Confirm that Cloudflare permits verified search crawlers and does not challenge
-their HTML, CSS, JavaScript, robots or sitemap requests. A normal browser returning
-200 is not proof that a verified Googlebot request is allowed. Do not disable the
-site's CSP or all bot protections to solve a crawler-specific access problem.
-Indexability and structured data help discovery; neither guarantees indexing,
-Knowledge Graph inclusion, rich results or rankings.
-
-**Posts** are Markdown files in `frontend/content/posts/`. The file name is the
-URL slug, and the frontmatter drives the archive:
+**Posts** are Markdown files in `frontend/content/posts/`; the file name is
+the URL slug:
 
 ```markdown
 ---
@@ -196,40 +95,27 @@ title: My new article
 description: A concise factual summary for search and social metadata.
 author: Milchis Catalin-Marian
 date: 2026-10-09
-updated: 2026-10-10
 tags: security, radio
-likes: 0
 ---
 
 Article body in Markdown.
 ```
 
-`description` is optional and does not replace the visible article excerpt.
-When omitted, metadata falls back to an excerpt of the opening paragraph.
-Publication and update dates remain editorial values, not deployment timestamps.
+**Data** is plain JSON in `frontend/data/`: `profile.json` (home, footer, SEO),
+`projects.json` (projects page), `cv.json` (CV page). Canonical URLs default to
+`https://milchiscatalin.com`; override with `NEXT_PUBLIC_SITE_URL` only when
+needed (HTTPS origin, no path).
 
-**Data** is plain JSON in `frontend/data/`:
+## Related Links
 
-| File              | Used by                |
-| ----------------- | ---------------------- |
-| `profile.json`    | Home, footer, SEO      |
-| `projects.json`   | Projects page          |
-| `cv.json`         | CV page (achievements included) |
+- **[Live site](https://milchiscatalin.com)**: production deployment.
+- **[Next.js static exports](https://nextjs.org/docs/app/guides/static-exports)**: the build mode used here.
+- **[SomaFM](https://somafm.com/)**: the streamed radio channel.
 
-## Deploying to GitHub Pages
+## License
 
-This is a project site at `https://<user>.github.io/PersonalWEB/`, so Next.js
-needs a matching base path before building. Add one in `frontend/next.config.ts`:
+No license file is included yet; all rights reserved by the author. Article
+content and photographs are personal work.
 
-```ts
-const nextConfig: NextConfig = {
-  output: "export",
-  basePath: "/PersonalWEB",
-  assetPrefix: "/PersonalWEB/",
-  images: { unoptimized: true },
-};
-```
-
-Then publish the contents of `frontend/out/` (for example with the `gh-pages`
-package or a GitHub Actions workflow). Omit `basePath`/`assetPrefix` if the site
-is served from the domain root.
+> [LinkedIn](https://www.linkedin.com/in/milchis-catalin-marian-824b61335/) &nbsp;&middot;&nbsp;
+> GitHub [@DarkSoulEngineer](https://github.com/DarkSoulEngineer)
